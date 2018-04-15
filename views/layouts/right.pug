@@ -1,0 +1,60 @@
+extends base
+
+block append content
+  .row
+    .div(class='8u 12u(mobile) important(mobile)')
+      
+      // Content
+      article.box.post
+        a.image.featured(href='#')
+          img(src='images/pic01.jpg', alt='')
+        
+        header
+          h2 Left Sidebar
+          =content
+        
+        section
+          header
+            h3 Something else
+          =content
+        
+        section
+          header
+            h3 So in conclusion ...
+          p
+            | Nunc diam iaculis massa, et aliquet nibh leo non nisl vitae porta lobortis, enim neque fringilla nunc,
+            | eget faucibus lacus sem quis nunc suspendisse nec lectus sit amet augue rutrum vulputate ut ut mi. Aenean
+            | elementum, mi sit amet porttitor lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor
+            | sit amet nullam consequat feugiat dolore tempus. Elementum odio duis semper risus et lectus commodo fringilla.
+            | Maecenas sagittis convallis justo vel mattis.
+    
+    // Sidebar
+    .div(class='4u 12u(mobile)')
+
+      section.box
+        a.image.featured(href='#')
+          img(src='images/pic09.jpg', alt='')
+        header
+          h3 Sed etiam lorem nulla
+        p
+          | Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit  adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.
+        footer
+          a.button.alt(href='#') Magna sed taciti
+    
+      section.box
+        header
+          h3 Feugiat consequat
+        p
+          | Veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat sed lorem consequat feugiat lorem dolore.
+        ul.divided
+          li
+            a(href='#') Sed et blandit consequat sed
+          li
+            a(href='#') Hendrerit tortor vitae sapien dolore
+          li
+            a(href='#') Sapien id suscipit magna sed felis
+          li
+            a(href='#') Aptent taciti sociosqu ad litora
+    
+        footer
+          a.button.alt(href='#') Ipsum consequat
