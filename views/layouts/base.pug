@@ -1,10 +1,8 @@
-include mixins/banner
-include mixins/intro
-include mixins/navbar
-include mixins/portfolio_list
-include mixins/blog_list
-include mixins/footer
-include mixins/scripts
+include ../mixins/navbar
+include ../mixins/portfolio_list
+include ../mixins/blog_list
+include ../mixins/footer
+include ../mixins/scripts
 
 doctype html
 html
@@ -30,28 +28,13 @@ html
 
           // Nav
           +navbar
-					
-          // Banner
-          +banner
 
-          // Intro
-          +intro
-
+          block header
+          
       // Main
       #main-wrapper
         .container
-  
-          .row
-            div(class='12u')
-              // ADDED
-              block content
-          .row
-            div(class='12u')
-              +portfolio_list
-
-          .row
-            div(class='12u')
-              +blog_list
+          block content
 
       // Footer
       +footer

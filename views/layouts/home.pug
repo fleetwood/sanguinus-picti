@@ -1,0 +1,25 @@
+extends base
+
+include ../mixins/banner
+include ../mixins/intro
+
+
+block append header
+  // Banner
+  +banner
+
+  // Intro
+  +intro
+
+block append content
+  .row
+    div(class='12u')
+      // ADDED
+      =content
+  .row
+    div(class='12u')
+      +portfolio_list
+
+  .row
+    div(class='12u')
+      +blog_list

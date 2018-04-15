@@ -1,0 +1,14 @@
+{
+    "knex" : {
+        "client": "pg",
+        "connection": {
+            "host": "ec2-54-243-213-188.compute-1.amazonaws.com",
+            "database": "db5eflh0ccipjd",
+            "user": "tjryzxdkhapnho",
+            "port": 5432,
+            "password": "5ee973b22b3140251ab1f8f582c5df754599262b14328c5fc64131b2535cba2b"
+        },
+        "uri": "postgres://tjryzxdkhapnho:5ee973b22b3140251ab1f8f582c5df754599262b14328c5fc64131b2535cba2b@ec2-54-243-213-188.compute-1.amazonaws.com:5432/db5eflh0ccipjd",
+        "heroku-cli": "heroku pg:psql postgresql-encircled-95685 --app sanguinus-picti"
+    }
+}
