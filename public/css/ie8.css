@@ -1,7 +1,3 @@
-@import 'libs/vars';
-@import 'libs/functions';
-@import 'libs/mixins';
-
 /*
 	Dopetrope by HTML5 UP
 	html5up.net | @ajlkn
@@ -10,14 +6,12 @@
 
 /* Basic */
 
-	form {
-		input[type=text],
-		input[type=password],
-		select,
-		textarea {
-			position: relative;
-			-ms-behavior: url('assets/js/ie/PIE.htc');
-		}
+	form input[type=text],
+	form input[type=password],
+	form select,
+	form textarea {
+		position: relative;
+		-ms-behavior: url("/js/ie/PIE.htc");
 	}
 
 	input[type="button"],
@@ -30,24 +24,24 @@
 	#copyright .links,
 	#nav > ul > li > a {
 		position: relative;
-		-ms-behavior: url('assets/js/ie/PIE.htc');
+		-ms-behavior: url("/js/ie/PIE.htc");
 	}
 
 /* Nav */
 
 	.dropotron {
 		position: relative;
-		-ms-behavior: url('assets/js/ie/PIE.htc');
+		-ms-behavior: url("/js/ie/PIE.htc");
+	}
 
-		&.level-0 {
+		.dropotron.level-0 {
 			box-shadow: none !important;
 		}
-	}
 
 /* Banner */
 
 	#banner {
 		background-position: auto;
 		background-size: contain;
-		-ms-behavior: url('assets/js/ie/backgroundsize.min.htc');
+		-ms-behavior: url("/js/ie/backgroundsize.min.htc");
 	}

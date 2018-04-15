@@ -1,0 +1,60 @@
+include mixins/banner
+include mixins/intro
+include mixins/navbar
+include mixins/portfolio_list
+include mixins/blog_list
+include mixins/footer
+include mixins/scripts
+
+doctype html
+html
+  head
+    title Sanguinus Picti
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    //if lte IE 8
+      script(src='/js/ie/html5shiv.js')
+    link(rel='stylesheet', href='/css/main.css')
+    //if lte IE 8
+      link(rel='stylesheet', href='/css/ie8.css')
+
+  body.homepage
+    #page-wrapper
+			
+      // Header
+      #header-wrapper
+        #header
+          // Logo
+          h1
+            a(href='/') Sanguinus Picti
+
+          // Nav
+          +navbar
+					
+          // Banner
+          +banner
+
+          // Intro
+          +intro
+
+      // Main
+      #main-wrapper
+        .container
+  
+          .row
+            div(class='12u')
+              // ADDED
+              block content
+          .row
+            div(class='12u')
+              +portfolio_list
+
+          .row
+            div(class='12u')
+              +blog_list
+
+      // Footer
+      +footer
+  
+    // Scripts
+    +scripts
