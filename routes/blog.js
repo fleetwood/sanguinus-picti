@@ -13,10 +13,10 @@ const schema = (data) => {
 base.get('/blog', (res) => {
   Page.list((err, results) => {
     if (err) {
-      res.render('leftbar', base.page_error(err));
+      res.render('error', base.page_error(err));
     }
     else {
-      res.render('leftbar', schema(results));
+      res.render('blog/list', schema(results));
     }
   });
 });
@@ -28,7 +28,7 @@ base.get('/blog/:url', (res) => {
       res.render('error', base.page_error(err));
     }
     else {
-      res.render('rightbar', schema(results));
+      res.render('blog/index', schema(results));
     }
   });
 });

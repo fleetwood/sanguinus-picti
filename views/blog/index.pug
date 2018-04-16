@@ -1,0 +1,9 @@
+extends ../layouts/left
+
+block page_content
+  article.box.post  
+    header
+      h2= data.title
+    div= data.body
+    div
+      | Posted by: #{data.author_id} on #{data.postDate}

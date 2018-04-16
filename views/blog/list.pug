@@ -1,0 +1,17 @@
+extends ../layouts/left
+
+block page_content
+  article.box.post
+    header
+      h2= title
+    hr
+    for post in data
+      section
+        a.image.featured(href=`./blog/${post.url}`)
+          img(src=post.header_image)
+        header
+          h3= post.title
+        div= post.body
+        div
+          | Posted by: #{post.author_id} on #{post.postDate}
+      hr
