@@ -54,6 +54,13 @@ mixin navbar(active)
             else
                 li
                     a(href='/about') About Us
+
+            if active == 'blog'
+                li.current
+                    a(href='/blog') Blog
+            else
+                li
+                    a(href='/blog') Blog
             //- li
             //-     a(href='no-sidebar.html') No Sidebar
     

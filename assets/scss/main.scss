@@ -656,7 +656,7 @@ $soft_white: #ccc;
 
 	#main-wrapper {
 		position: relative;
-		background: #f7f7f7 url('images/bg.png');
+		background: $base_gray_1 url('images/bg.png');
 
 		&:before {
 			content: '';

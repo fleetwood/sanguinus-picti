@@ -32,6 +32,14 @@ class Router {
             callback(res);
         });
     }
+
+    get page_error() {
+        return {content: `There was an error loading the page.`};
+    }
+    
+    page_error(err) {
+        return {content: `There was an error loading the page: ${err ? err.message : 'Unknown error'}`};
+    }
 }
 
 module.exports = new Router();

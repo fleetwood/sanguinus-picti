@@ -1,5 +1,12 @@
 extends ./layouts/left
 
-block append content
-  = content
-      
+block dynamic_content
+  for post in data
+    article.box.post
+      a.image.featured(href=`./blog/${post.url}`)
+        img(src=post.header_image, alt='')
+      header
+        h3= post.title
+      div= post.body
+      div
+        | Posted by: #{post.author_id} on #{post.postDate}

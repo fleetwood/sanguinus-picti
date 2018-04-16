@@ -1,5 +1,4 @@
 var createError = require('http-errors');
-var consign = require('consign');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -9,6 +8,7 @@ var indexRouter = require('./routes/index');
 var workRouter = require('./routes/work');
 var aboutRouter = require('./routes/about');
 var tatRouter = require('./routes/tattoos');
+var blogRouter = require('./routes/blog');
 
 var app = express();
 
@@ -26,6 +26,7 @@ app.use('/', indexRouter.router);
 app.use('/work', workRouter.router);
 app.use('/about', aboutRouter.router);
 app.use('/tattoos', tatRouter.router);
+app.use('/blog', blogRouter.router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
