@@ -1,4 +1,4 @@
-const base = require('./Router');
+const base = require('../helpers/Router');
 
 /* GET home page. */
 base.get('/about', (res) => {

@@ -5,9 +5,9 @@ mixin navbar(active)
         ul
             if (active == 'home') 
                 li.current
+                    a(href='/') Home
             else
                 li
-            
                     a(href='/') Home
             //- li
             //-     a(href='#') Dropdown
@@ -36,12 +36,21 @@ mixin navbar(active)
             
             if active == 'work'
                 li.current
+                    a(href='/work') Our Work
             else
                 li
                     a(href='/work') Our Work
+
+            if active == 'tattoos'
+                li.current
+                    a(href='/tattoos') Tattoos
+            else
+                li
+                    a(href='/tattoos') Tattoos
             
             if active == 'about'
                 li.current
+                    a(href='/about') About Us
             else
                 li
                     a(href='/about') About Us
