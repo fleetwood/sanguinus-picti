@@ -11,7 +11,7 @@ const schema = (data) => {
 
 /* GET home page. */
 base.get('/blog', (res) => {
-  Page.list((err, results) => {
+  Page.all(Page.views.page_author, {}, (err, results) => {
     if (err) {
       res.render('error', base.page_error(err));
     }
@@ -23,7 +23,7 @@ base.get('/blog', (res) => {
 
 /* GET home page. */
 base.get('/blog/:url', (res) => {
-  Page.getBlogUrl(res.req.params.url, (err, results) => {
+  Page.one(Page.views.page_author, {url: res.req.params.url}, (err, results) => {
     if (err) {
       res.render('error', base.page_error(err));
     }

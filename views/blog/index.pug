@@ -5,5 +5,7 @@ block page_content
     header
       h2= data.title
     div= data.body
+    for image in data.images
+      img(src=image.src)
     div
-      | Posted by: #{data.author_id} on #{data.postDate}
+      | Posted by: #{data.name} on #{data.postDate}
