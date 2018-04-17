@@ -2,6 +2,9 @@ const config = require('config');
 const knex = require('knex')(config.knex);
 const validator = require('lx-valid');
 
+/**
+ * Object model coupled with knex methods
+ */
 class KnexModel {
   constructor(definition) {
     this._knex = knex;
@@ -10,6 +13,9 @@ class KnexModel {
     this.schema = definition.schema;
   }
 
+  /**
+   * References to pug view locations
+   */
   get pugviews() {
     return {
       base: 'layouts/base',
@@ -20,6 +26,10 @@ class KnexModel {
     };
   };
 
+  /**
+   * References views in the database.
+   * ToDo: Add views to migrations
+   */
   get dbviews() {
     return {
       page_author: 'page_author',
@@ -27,56 +37,88 @@ class KnexModel {
     };
   };
 
+  /**
+   * Validate the data against the model schema
+   * @param {JSON} data 
+   * @param {Boolean} isUpdate 
+   */
   validate(data, isUpdate = false) {
     const validate = validator.getValidationFunction();
     return validate(data, this.schema, { isUpdate: isUpdate });
   };
 
-  all(options, done) {
-    const orderCol = options.orderBy ? options.orderBy.col : this.key;
-    const orderDir = options.orderBy ? options.orderBy.dir : 'asc';
-    knex.select(options.select || '*')
-      .from(options.name)
-      .where(options.where || {})
-      .orderBy(orderCol, orderDir)
-      .then(results => done(null, results))
-      .catch(err => done(err))
-      ;
+  /**
+   * 
+   * @param {{select, name, where, orderCol, orderDir}} options 
+   */
+  KnexOptions(options) {
+    return {
+      select: options.select || '*',
+      name: options.name || this.tableName,
+      where: options.where || {},
+      orderCol: options.orderCol || this.key,
+      orderDir: options.orderDir || 'asc'
+    };
   }
 
-  one(options, done) {
-    const orderCol = options.orderBy ? options.orderBy.col : this.key;
-    const orderDir = options.orderBy ? options.orderBy.dir : 'asc';
-    knex.select(options.select || '*')
+  /**
+   * Get all entities matching options criteria
+   * @see KnexOptions
+   * @param {KnexOptions} params 
+   * @param {Function} done 
+   */
+  all(params, done) {
+    const options = this.KnexOptions(params);
+    knex.select(options.select)
       .from(options.name)
-      .where(options.where || {})
-      .orderBy(orderCol, orderDir)
-      .then(results => done(null, results[0]))
-      .catch(err => done(err))
-      ;
+      .where(options.where)
+      .orderBy(options.orderCol, options.orderDir)
+      .then(results => done(null, results))
+      .catch(err => done(err));
   }
-/**
+
+  /**
+   * Get a single entity
+   * @param {KnexOptions} params
+   * @see KnexOptions
+   * @param {Function} done 
+   */
+  one(params, done) {
+    const options = this.KnexOptions(params);
+    knex.select(options.select)
+      .from(options.name)
+      .where(options.where)
+      .orderBy(options.orderCol, options.orderDir)
+      .then(results => done(null, results[0]))
+      .catch(err => done(err));
+  }
+
+  /**
  * Get all featured blogs
  * @param {function} done 
  */
   featuredBlogList(done) {
     return this.all({
-      name: this.dbviews.page_author,
-      where: {featured: true},
-      orderBy: {col: 'posted_date', dir: 'desc'}
-      }, 
+        name: this.dbviews.page_author,
+        where: {featured: true},
+        orderCol: 'posted_date', 
+        orderDir: 'desc'
+      },
       done);
   }
-/**
+
+  /**
  * Get all featured tattoos
  * @param {function} done 
  */
   featuredTattooList(done) {
     return this.all({
-      name: this.dbviews.tattoo_author,
-      where: {featured: true},
-      orderBy: {col: 'posted_date', dir: 'desc'}
-    }, done);
+        name: this.dbviews.tattoo_author,
+        where: {featured: true},
+        orderCol: 'posted_date',
+        orderDir: 'desc'
+      },
+      done);
   }
 
   insert(data, done) {
