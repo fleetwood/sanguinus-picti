@@ -1,7 +1,7 @@
 const base = require('../helpers/Router');
 const Page = require('../models/Page');
 
-const schema = (data) => {
+const viewData = (data) => {
   return {
     title: 'Blog',
     current: 'blog',
@@ -11,24 +11,31 @@ const schema = (data) => {
 
 /* GET home page. */
 base.get('/blog', (res) => {
-  Page.all(Page.views.page_author, {}, (err, results) => {
+  Page.all({name: Page.dbviews.page_author}, (err, results) => {
     if (err) {
-      res.render('error', base.page_error(err));
+      res.render(Page.pugviews.error, base.page_error(err));
     }
     else {
-      res.render('blog/list', schema(results));
+      res.render('blog/list', viewData(results));
     }
   });
 });
 
 /* GET home page. */
 base.get('/blog/:url', (res) => {
-  Page.one(Page.views.page_author, {url: res.req.params.url}, (err, results) => {
+  const byBlogUrl = {
+    name: Page.dbviews.page_author, 
+    where: {
+      url: res.req.params.url
+    }
+  };
+
+  Page.one(byBlogUrl, (err, results) => {
     if (err) {
-      res.render('error', base.page_error(err));
+      res.render(Page.pugviews.error, base.page_error(err));
     }
     else {
-      res.render('blog/index', schema(results));
+      res.render('blog/index', viewData(results));
     }
   });
 });

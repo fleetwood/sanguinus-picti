@@ -2,6 +2,7 @@ const KnexModel = require('../helpers/KnexModel');
 
 const definition = {
     tableName: 'pages',
+    key: 'id',
     fields: {
         properties: {
             url: {

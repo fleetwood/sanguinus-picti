@@ -6,12 +6,24 @@ class KnexModel {
   constructor(definition) {
     this._knex = knex;
     this.tableName = definition.tableName;
+    this.key = definition.key;
     this.schema = definition.schema;
   }
 
-  get views() {
+  get pugviews() {
     return {
-      page_author: 'page_author'
+      base: 'layouts/base',
+      error: 'layouts/error',
+      home: 'layouts/home',
+      left: 'layouts/left',
+      right: 'layouts/right'
+    };
+  };
+
+  get dbviews() {
+    return {
+      page_author: 'page_author',
+      tattoo_author: 'tattoo_author'
     };
   };
 
@@ -20,48 +32,51 @@ class KnexModel {
     return validate(data, this.schema, { isUpdate: isUpdate });
   };
 
-  list(done) {
-    knex.select('*')
-      .from(this.tableName)
-      .then(results => done(null, results))
-      .catch(err => done(err))
-      ;
-  };
-
-  all(name, where, done) {
-    knex.select('*')
-      .from(name)
-      .where(where)
+  all(options, done) {
+    const orderCol = options.orderBy ? options.orderBy.col : this.key;
+    const orderDir = options.orderBy ? options.orderBy.dir : 'asc';
+    knex.select(options.select || '*')
+      .from(options.name)
+      .where(options.where || {})
+      .orderBy(orderCol, orderDir)
       .then(results => done(null, results))
       .catch(err => done(err))
       ;
   }
 
-  one(name, where, done) {
-    knex.select('*')
-      .from(name)
-      .where(where)
+  one(options, done) {
+    const orderCol = options.orderBy ? options.orderBy.col : this.key;
+    const orderDir = options.orderBy ? options.orderBy.dir : 'asc';
+    knex.select(options.select || '*')
+      .from(options.name)
+      .where(options.where || {})
+      .orderBy(orderCol, orderDir)
       .then(results => done(null, results[0]))
       .catch(err => done(err))
       ;
   }
-
-  get(entityid, done) {
-    knex.select('*')
-      .from(this.tableName)
-      .where({ id: entityid })
-      .then(results => done(null, results[0]))
-      .catch(err => done(err))
-      ;
-  };
-
-  getWhere(where, done) {
-    knex.select('*')
-      .from(this.tableName)
-      .where(where)
-      .then(results => done(null, results[0]))
-      .catch(err => done(err))
-      ;
+/**
+ * Get all featured blogs
+ * @param {function} done 
+ */
+  featuredBlogList(done) {
+    return this.all({
+      name: this.dbviews.page_author,
+      where: {featured: true},
+      orderBy: {col: 'posted_date', dir: 'desc'}
+      }, 
+      done);
+  }
+/**
+ * Get all featured tattoos
+ * @param {function} done 
+ */
+  featuredTattooList(done) {
+    return this.all({
+      name: this.dbviews.tattoo_author,
+      where: {featured: true},
+      orderBy: {col: 'posted_date', dir: 'desc'}
+    }, done);
   }
 
   insert(data, done) {
@@ -105,9 +120,9 @@ class KnexModel {
     }
   };
 
-  delete(taskId, done) {
+  delete(entityId, done) {
     knex(this.tableName)
-      .where('id', taskId)
+      .where('id', entityId)
       .delete()
       .then(() => done(null))
       .catch(err => done(err))
