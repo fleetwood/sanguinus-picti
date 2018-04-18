@@ -622,10 +622,6 @@ $soft_white: #ccc;
 /* Banner */
 
 	#banner {
-		background: #CCE8F4 url('../../images/pic01.jpg');
-		background-position: center center;
-		background-size: auto 100%;
-		background-repeat: no-repeat;
 		text-align: center;
 
 		header {
@@ -650,8 +646,11 @@ $soft_white: #ccc;
 
 	#header-wrapper {
 		position: relative;
-		background: $white;
-		border-bottom: solid 1px $soft_white;
+		background: $mostly_white url("/images/tat01.jpg");
+		background-position: top center;
+		background-size: 100%;
+		background-repeat: no-repeat;
+		border-bottom: solid 1px $mid_gray_1;
 	}
 
 	#main-wrapper {

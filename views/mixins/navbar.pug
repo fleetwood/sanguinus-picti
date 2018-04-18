@@ -3,64 +3,22 @@ mixin navbar(active)
     // Nav
     nav#nav
         ul
-            if (active == 'home') 
-                li.current
-                    a(href='/') Home
-            else
-                li
-                    a(href='/') Home
-            //- li
-            //-     a(href='#') Dropdown
-            //-     ul
-            //-         li
-            //-             a(href='#') Lorem ipsum dolor
-            //-         li
-            //-             a(href='#') Magna phasellus
-            //-         li
-            //-             a(href='#') Etiam dolore nisl
-            //-         li
-            //-             a(href='#') Phasellus consequat
-            //-             ul
-            //-                 li
-            //-                     a(href='#') Magna phasellus
-            //-                 li
-            //-                     a(href='#') Etiam dolore nisl
-            //-                 li
-            //-                     a(href='#') Veroeros feugiat
-            //-                 li
-            //-                     a(href='#') Nisl sed aliquam
-            //-                 li
-            //-                     a(href='#') Dolore adipiscing
-            //-         li
-            //-             a(href='#') Veroeros feugiat
-            
-            if active == 'work'
-                li.current
-                    a(href='/work') Our Work
-            else
-                li
-                    a(href='/work') Our Work
+            li(class=`${active == 'home' ? 'current' : ''}`)
+                a(href='/') Home
 
-            if active == 'tattoos'
-                li.current
-                    a(href='/tattoos') Tattoos
-            else
-                li
-                    a(href='/tattoos') Tattoos
-            
-            if active == 'about'
-                li.current
-                    a(href='/about') About Us
-            else
-                li
-                    a(href='/about') About Us
+            li(class=`${active == 'work' ? 'current' : ''}`)
+                a(href='/work') Our Work
 
-            if active == 'blog'
-                li.current
-                    a(href='/blog') Blog
-            else
-                li
-                    a(href='/blog') Blog
-            //- li
-            //-     a(href='no-sidebar.html') No Sidebar
-    
+            li(class=`${active == 'tattoos' ? 'current' : ''}`)
+                a(href='/tattoos') Tattoos
+            
+            li(class=`${active == 'about' ? 'current' : ''}`)
+                a(href='/about') About Us
+
+            li(class=`${active == 'blog' ? 'current' : ''}`)
+                a(href='/blog') Blog
+                if bloglist
+                    ul
+                        for blog in bloglist
+                            li
+                                a(href=`./blog/${blog.url}`)= blog.title

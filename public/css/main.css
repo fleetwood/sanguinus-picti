@@ -1104,10 +1104,6 @@ ol.default {
 
 /* Banner */
 #banner {
-  background: #CCE8F4 url("../../images/pic01.jpg");
-  background-position: center center;
-  background-size: auto 100%;
-  background-repeat: no-repeat;
   text-align: center; }
   #banner header {
     background-color: #252122;
@@ -1124,8 +1120,11 @@ ol.default {
 /* Wrappers */
 #header-wrapper {
   position: relative;
-  background: #fff;
-  border-bottom: solid 1px #ccc; }
+  background: #ddd url("/images/tat01.jpg");
+  background-position: top center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  border-bottom: solid 1px #555; }
 
 #main-wrapper {
   position: relative;

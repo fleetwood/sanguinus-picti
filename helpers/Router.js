@@ -11,6 +11,19 @@ class Router {
         this._router = router;
     }
 
+    /**
+     * References to pug view locations
+     */
+    get views() {
+        return {
+            base: 'layouts/base',
+            error: 'layouts/error',
+            home: 'layouts/home',
+            left: 'layouts/left',
+            right: 'layouts/right'
+        };
+    };
+
     get config() {
         return this._config;
     }
@@ -28,17 +41,21 @@ class Router {
     }
 
     get(url, callback) {
-        this._router.get(url, function(req, res, next) {
+        this._router.get(url, function (req, res, next) {
             callback(res);
         });
     }
 
     get page_error() {
-        return {content: `There was an error loading the page.`};
+        return { content: `There was an error loading the page.` };
     }
-    
+
     page_error(err) {
-        return {content: `There was an error loading the page: ${err ? err.message : 'Unknown error'}`};
+        return { content: `There was an error loading the page: ${err ? err.message : 'Unknown error'}` };
+    }
+
+    renderError(res, err) {
+        res.render(this.views.error, this.page_error(err));
     }
 }
 

@@ -1,22 +1,34 @@
 const base = require('../helpers/Router');
 const Page = require('../models/Page');
 
-const viewData = (data) => {
+const viewData = (blogs, data) => {
   return {
     title: 'Blog',
     current: 'blog',
+    bloglist: blogs,
     data: data
   }
 };
 
 /* GET home page. */
 base.get('/blog', (res) => {
-  Page.all({name: Page.dbviews.page_author}, (err, results) => {
+  // todo: broke
+  Page.featuredBlogList((err, blogs) => {
     if (err) {
-      res.render(Page.pugviews.error, base.page_error(err));
+      base.renderError(res, err);
     }
     else {
-      res.render('blog/list', viewData(results));
+      Page.all({name: Page.dbviews.page_author}, (err, results) => {
+        if (err) {
+          base.renderError(res, err);
+        }
+        else {
+          // todo: see if there's a cleaner way of 
+          // handling this chain. Next, assign blogs
+          // to sidebar and/or nav.
+          res.render('blog/list', viewData(blogs, results));
+        }
+      });
     }
   });
 });
@@ -30,12 +42,22 @@ base.get('/blog/:url', (res) => {
     }
   };
 
-  Page.one(byBlogUrl, (err, results) => {
+  Page.featuredBlogList((err, blogs) => {
     if (err) {
-      res.render(Page.pugviews.error, base.page_error(err));
+      base.renderError(res, err);
     }
     else {
-      res.render('blog/index', viewData(results));
+      Page.one(byBlogUrl, (err, results) => {
+        if (err) {
+          base.renderError(res, err);
+        }
+        else {
+          // todo: see if there's a cleaner way of 
+          // handling this chain. Next, assign blogs
+          // to sidebar and/or nav.
+          res.render('blog/index', viewData(blogs, results));
+        }
+      });
     }
   });
 });

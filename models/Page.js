@@ -42,10 +42,6 @@ const definition = {
 };
 
 class Page extends KnexModel {
-
-    getBlogUrl(blogurl, done) {
-        return this.getWhere({url: blogurl}, done);
-    }
 }
 
 module.exports = new Page(definition);

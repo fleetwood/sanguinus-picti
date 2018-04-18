@@ -14,19 +14,6 @@ class KnexModel {
   }
 
   /**
-   * References to pug view locations
-   */
-  get pugviews() {
-    return {
-      base: 'layouts/base',
-      error: 'layouts/error',
-      home: 'layouts/home',
-      left: 'layouts/left',
-      right: 'layouts/right'
-    };
-  };
-
-  /**
    * References views in the database.
    * ToDo: Add views to migrations
    */
@@ -101,7 +88,7 @@ class KnexModel {
     return this.all({
         name: this.dbviews.page_author,
         where: {featured: true},
-        orderCol: 'posted_date', 
+        orderCol: 'postDate', 
         orderDir: 'desc'
       },
       done);
@@ -115,7 +102,7 @@ class KnexModel {
     return this.all({
         name: this.dbviews.tattoo_author,
         where: {featured: true},
-        orderCol: 'posted_date',
+        orderCol: 'postDate',
         orderDir: 'desc'
       },
       done);
@@ -170,6 +157,7 @@ class KnexModel {
       .catch(err => done(err))
       ;
   }
+
 };
 
 module.exports = KnexModel;
