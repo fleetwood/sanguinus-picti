@@ -2,11 +2,11 @@ extends ../layouts/left
 
 block page_content
   article.box.post
-    img(src=data.images.header)
+    img(src=data.images.header, class="12u")
     header
       h2= data.title
     div= data.body
     for image in data.images.gallery
-      img(src=image)
+      img(src=image class="4u 12u(mobile)")
     div
       | Posted by: #{data.name} on #{recentDate(data.postDate)}
