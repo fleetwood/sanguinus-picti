@@ -41,7 +41,7 @@ class Router {
     }
 
     get(url, callback) {
-        this._router.get(url, function (req, res, next) {
+        this.router.get(url, function (req, res, next) {
             callback(res);
         });
     }
@@ -55,7 +55,7 @@ class Router {
     }
 
     renderError(res, err) {
-        res.render(this.views.error, this.page_error(err));
+        res.render(this.views.error, {error: err});
     }
 }
 

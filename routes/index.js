@@ -1,8 +1,8 @@
-const base = require('../helpers/Router');
+const router = require('../helpers/Router');
 
 /* GET home page. */
-base.get('/', (res) => {
+router.get('/', (res) => {
   res.render('index', {title: 'Express', current: 'home', content: {}});
 })
 
-module.exports = base;
+module.exports = router;

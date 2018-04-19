@@ -4,6 +4,29 @@ include ../mixins/blog_list
 include ../mixins/footer
 include ../mixins/scripts
 
+-
+  function recentDate(date) {
+    var now = new moment();
+    var then = new moment(date);
+    if (now.diff(date, 'minutes') < 10) {
+      console.log('diff: '+now.diff(date, 'minutes'));
+      return 'just now';
+    }
+    else if (now.diff(date, 'minutes') < 60) {
+      console.log('diff: '+now.diff(date, 'minutes'));
+      return now.diff(date, 'minutes') + 'min ago';
+    }
+    else if (now.diff(date, 'hours') < 24) {
+      console.log('diff: '+now.diff(date, 'hours'));
+      return now.diff(date, 'hours') + 'h ago';
+    }
+    else if (now.diff(date, 'days') < 7) {
+      console.log('diff: '+now.diff(date, 'days'));
+      return now.diff(date, 'days') + 'd ago';
+    }
+    return 'on ' + moment(date).format('YYYY/MM/DD'); 
+  }
+
 doctype html
 html
   head

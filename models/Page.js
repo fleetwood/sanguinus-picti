@@ -10,7 +10,7 @@ const definition = {
                 trim: true,
                 required: true
             },
-            layout: {
+            pageType: {
                 type: 'string',
                 trim: true,
                 required: true
@@ -25,10 +25,15 @@ const definition = {
                 trim: true,
                 required: true
             },
-            header_image: {
+            summary: {
                 type: 'string',
                 trim: true,
-                required: false
+                required: true
+            },
+            images: {
+                type: 'json',
+                trim: true,
+                required: true
             },
             featured: {
                 type: 'boolean'
@@ -36,12 +41,32 @@ const definition = {
             author_id: {
                 type: 'integer',
                 required: true
+            },
+            postDate: {
+                type: 'datetime',
+                required: true
             }
         }
     }
 };
 
 class Page extends KnexModel {
+    constructor(type) {
+        super(definition);
+        this._pageType = type;
+    }
+
+    get pageType() {
+        return this._pageType;
+    }
+
+    get pageTypes() {
+        return KnexModel.pageTypes;
+    }
+
+    get tables() {
+        return KnexModel.tables;
+    }
 }
 
-module.exports = new Page(definition);
+module.exports = Page;

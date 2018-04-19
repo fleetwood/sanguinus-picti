@@ -1,65 +1,63 @@
-const base = require('../helpers/Router');
+const page = require('../models/Tattoo');
+const router = require('../helpers/Router');
+
+const viewData = (tattoos, data) => {
+  return {
+    title: 'Tattoo',
+    current: 'tattoo',
+    tattoolist: tattoos,
+    data: data
+  }
+};
 
 /* GET home page. */
-base.get('/tattoos', (res) => {
-  res.render('leftbar', {title: 'Our Tattoos', current: 'tattoos', content: {}});
-})
+router.get('/tattoos', (res) => {
+  page.featuredTattooList((err, tattoos) => {
+    if (err) {
+      router.renderError(res, err);
+    }
+    else {
+      page.all({
+        name: page.tables.views.page_author, 
+        where: { pageType: page.pageType },
+        orderCol: page.tables.postDate,
+        orderDir: page.tables.sort.desc
+      }, (err, results) => {
+        if (err) {
+          router.renderError(res, err);
+        }
+        else {
+          res.render('tattoos/list', viewData(tattoos, results));
+        }
+      });
+    }
+  });
+});
 
-module.exports = base;
+/* GET home page. */
+router.get('/tattoos/:url', (res) => {
+  const byTattooUrl = {
+    name: page.tables.views.page_author,
+    where: {
+      url: res.req.params.url
+    }
+  };
 
-// module.exports = app => {
-  // const Tasks = app.models.tasks;
+  page.featuredTattooList((err, tattoos) => {
+    if (err) {
+      router.renderError(res, err);
+    }
+    else {
+      page.one(byTattooUrl, (err, results) => {
+        if (err) {
+          router.renderError(res, err);
+        }
+        else {
+          res.render('tattoos/index', viewData(tattoos, results));
+        }
+      });
+    }
+  });
+});
 
-  // app.get('/tasks', (req, res) => {
-  //   Tasks.list((err, tasks) => {
-  //     if (err) {
-  //       return res.status(412).json(err);
-  //     }
-  //     return res.json(tasks);
-  //   });
-  // });
-
-  // app.get('/tasks/:taskId', (req, res) => {
-  //   const { taskId } = req.params;
-  //   Tasks.get(taskId, (err, task) => {
-  //     if (err) {
-  //       return res.status(412).json(err);
-  //     }
-  //     if (task) {
-  //       return res.json(task);
-  //     }
-  //     return res.status(404).end();
-  //   });
-  // });
-
-  // app.post('/tasks', (req, res) => {
-  //   const task = req.body;
-  //   Tasks.insert(task, (err, newTask) => {
-  //     if (err) {
-  //       return res.status(412).json(err);
-  //     }
-  //     return res.json(newTask);
-  //   });
-  // });
-
-  // app.put('/tasks/:taskId', (req, res) => {
-  //   const { taskId } = req.params;
-  //   const task = req.body;
-  //   Tasks.update(taskId, task, (err, newTask) => {
-  //     if (err) {
-  //       return res.status(412).json(err);
-  //     }
-  //     return res.json(newTask);
-  //   });
-  // });
-
-  // app.delete('/tasks/:taskId', (req, res) => {
-  //   const { taskId } = req.params;
-  //   Tasks.delete(taskId, (err) => {
-  //     if (err) {
-  //       return res.status(412).json(err);
-  //     }
-  //     return res.status(204).end();
-  //   });
-  // });
-// };
+module.exports = router;

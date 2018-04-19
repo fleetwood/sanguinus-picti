@@ -1,5 +1,5 @@
-const base = require('../helpers/Router');
-const Page = require('../models/Page');
+const page = require('../models/Blog');
+const router = require('../helpers/Router');
 
 const viewData = (blogs, data) => {
   return {
@@ -11,16 +11,21 @@ const viewData = (blogs, data) => {
 };
 
 /* GET home page. */
-base.get('/blog', (res) => {
+router.get('/blog', (res) => {
   // todo: broke
-  Page.featuredBlogList((err, blogs) => {
+  page.featuredBlogList((err, blogs) => {
     if (err) {
-      base.renderError(res, err);
+      router.renderError(res, err);
     }
     else {
-      Page.all({name: Page.dbviews.page_author}, (err, results) => {
+      page.all({
+        name: page.tables.views.page_author, 
+        where: { pageType: page.pageType },
+        orderCol: page.tables.postDate,
+        orderDir: page.tables.sort.desc
+      }, (err, results) => {
         if (err) {
-          base.renderError(res, err);
+          router.renderError(res, err);
         }
         else {
           // todo: see if there's a cleaner way of 
@@ -34,22 +39,22 @@ base.get('/blog', (res) => {
 });
 
 /* GET home page. */
-base.get('/blog/:url', (res) => {
+router.get('/blog/:url', (res) => {
   const byBlogUrl = {
-    name: Page.dbviews.page_author, 
+    name: page.tables.views.page_author,
     where: {
       url: res.req.params.url
     }
   };
 
-  Page.featuredBlogList((err, blogs) => {
+  page.featuredBlogList((err, blogs) => {
     if (err) {
-      base.renderError(res, err);
+      router.renderError(res, err);
     }
     else {
-      Page.one(byBlogUrl, (err, results) => {
+      page.one(byBlogUrl, (err, results) => {
         if (err) {
-          base.renderError(res, err);
+          router.renderError(res, err);
         }
         else {
           // todo: see if there's a cleaner way of 
@@ -62,4 +67,4 @@ base.get('/blog/:url', (res) => {
   });
 });
 
-module.exports = base;
+module.exports = router;

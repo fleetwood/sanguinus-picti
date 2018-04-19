@@ -15,6 +15,7 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+app.locals.moment = require('moment');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -45,4 +46,6 @@ app.use(function(err, req, res, next) {
 });
 
 app.listen(3001, 'localhost');
+console.log('App listening on localhost:3001...');
+
 module.exports = app;

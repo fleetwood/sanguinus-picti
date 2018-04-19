@@ -13,14 +13,29 @@ class KnexModel {
     this.schema = definition.schema;
   }
 
-  /**
-   * References views in the database.
-   * ToDo: Add views to migrations
-   */
-  get dbviews() {
+  static get tables() { 
     return {
-      page_author: 'page_author',
-      tattoo_author: 'tattoo_author'
+      all: '*',
+      pages: 'pages',
+      postDate: 'postDate',
+      sort: {
+        asc: 'asc',
+        desc: 'desc'
+      },
+      users: 'users',
+      views: {
+        page_author: 'page_author'
+      }
+    }
+  };
+
+  /**
+   * References types of pages in 'pages' table
+   */
+  static get pageTypes() {
+    return {
+      blog: 'blog',
+      tattoos: 'tattoos'
     };
   };
 
@@ -40,11 +55,13 @@ class KnexModel {
    */
   KnexOptions(options) {
     return {
-      select: options.select || '*',
+      select: options.select || this.tables.all,
       name: options.name || this.tableName,
       where: options.where || {},
+      // join: options.join || null,
+      // joinon: options.joinon || null,
       orderCol: options.orderCol || this.key,
-      orderDir: options.orderDir || 'asc'
+      orderDir: options.orderDir || this.tables.sort.desc
     };
   }
 
@@ -56,12 +73,15 @@ class KnexModel {
    */
   all(params, done) {
     const options = this.KnexOptions(params);
-    knex.select(options.select)
+    const k = knex
+      .debug(true)
+      .select(options.select)
       .from(options.name)
       .where(options.where)
       .orderBy(options.orderCol, options.orderDir)
       .then(results => done(null, results))
       .catch(err => done(err));
+    console.log(k.toString());
   }
 
   /**
@@ -72,11 +92,28 @@ class KnexModel {
    */
   one(params, done) {
     const options = this.KnexOptions(params);
-    knex.select(options.select)
+    knex
+      .debug(true)
+      .select(options.select)
       .from(options.name)
       .where(options.where)
       .orderBy(options.orderCol, options.orderDir)
       .then(results => done(null, results[0]))
+      .catch(err => done(err));
+  }
+
+  join(params, done) {
+    const options = this.KnexOptions(params);
+    const sql = knex.select(options.select)
+      .from(options.name)
+      .where(options.where)
+      .join(options.join, options.joinon)
+      .orderBy(options.orderCol, options.orderDir);
+    
+    console.log(sql.toString());
+    
+    return sql
+      .then(results => done(null, results))
       .catch(err => done(err));
   }
 
@@ -86,12 +123,11 @@ class KnexModel {
  */
   featuredBlogList(done) {
     return this.all({
-        name: this.dbviews.page_author,
-        where: {featured: true},
-        orderCol: 'postDate', 
-        orderDir: 'desc'
-      },
-      done);
+      name: KnexModel.tables.views.page_author,
+      where: {featured: true, pageType: KnexModel.pageTypes.blog},
+      orderCol: this.tables.postDate, 
+      orderDir: this.tables.sort.desc
+    }, done);
   }
 
   /**
@@ -100,12 +136,11 @@ class KnexModel {
  */
   featuredTattooList(done) {
     return this.all({
-        name: this.dbviews.tattoo_author,
-        where: {featured: true},
-        orderCol: 'postDate',
-        orderDir: 'desc'
-      },
-      done);
+      name: KnexModel.tables.views.page_author,
+      where: {featured: true, pageType: KnexModel.pageTypes.tattoos},
+      orderCol: this.tables.postDate, 
+      orderDir: this.tables.sort.desc
+    }, done);
   }
 
   insert(data, done) {
