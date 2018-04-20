@@ -7,10 +7,10 @@ block page_content
     hr
     for post in data
       section
-        a.image.featured(href=`./blog/${post.url}`)
+        a.image.featured(href=`./tattoos/${post.url}`)
           img(src=`${post.images.header}`)
         header
-          a(href=`./blog/${post.url}`)
+          a(href=`./tattoos/${post.url}`)
             h3= post.title
         div= post.summary
         .footer

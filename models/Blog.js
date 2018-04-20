@@ -2,7 +2,7 @@ const Page = require('./Page');
 
 class Blog extends Page {
     constructor() {
-        super(Page.pageTypes.blog);
+        super('Blog', Page.pageTypes.blog);
     }
 }
 

@@ -51,11 +51,15 @@ const definition = {
 };
 
 class Page extends KnexModel {
-    constructor(type) {
+    constructor(title, type) {
         super(definition);
+        this._title = title;
         this._pageType = type;
     }
 
+    get title() {
+        return this._title;
+    }
     get pageType() {
         return this._pageType;
     }
@@ -67,6 +71,15 @@ class Page extends KnexModel {
     get tables() {
         return KnexModel.tables;
     }
+
+    viewData(menus, data) {
+        return {
+            title: this.title,
+            current: this.pageType,
+            menus: menus,
+            data: data
+        }
+    };
 }
 
 module.exports = Page;

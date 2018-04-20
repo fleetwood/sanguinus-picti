@@ -2,7 +2,7 @@ const Page = require('./Page');
 
 class Tattoo extends Page {
     constructor() {
-        super(Page.pageTypes.tattoos);
+        super('Tattoos', Page.pageTypes.tattoos);
     }
 }
 

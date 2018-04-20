@@ -1,40 +1,23 @@
 const page = require('../models/Blog');
 const router = require('../helpers/Router');
 
-const viewData = (blogs, data) => {
-  return {
-    title: 'Blog',
-    current: 'blog',
-    bloglist: blogs,
-    data: data
-  }
-};
-
 /* GET home page. */
 router.get('/blog', (res) => {
   // todo: broke
-  page.featuredBlogList((err, blogs) => {
-    if (err) {
-      router.renderError(res, err);
-    }
-    else {
+  page.getMenus()
+    .then(menus => {
       page.all({
-        name: page.tables.views.page_author, 
-        where: { pageType: page.pageType },
-        orderCol: page.tables.postDate,
-        orderDir: page.tables.sort.desc
-      }, (err, results) => {
-        if (err) {
-          router.renderError(res, err);
-        }
-        else {
-          // todo: see if there's a cleaner way of 
-          // handling this chain. Next, assign blogs
-          // to sidebar and/or nav.
-          res.render('blog/list', viewData(blogs, results));
-        }
-      });
-    }
+          name: page.tables.views.page_author, 
+          where: { pageType: page.pageType },
+          orderCol: page.tables.postDate,
+          orderDir: page.tables.sort.desc
+        })
+        .then(results =>{
+          res.render('blog/list', page.viewData(menus, results));
+        });     
+  })
+  .catch(err => {
+    router.renderError(res, err);
   });
 });
 
@@ -47,24 +30,16 @@ router.get('/blog/:url', (res) => {
     }
   };
 
-  page.featuredBlogList((err, blogs) => {
-    if (err) {
+  page.featuredBlogList()
+    .then(blogs => {
+      page.one(byBlogUrl)
+        .then(results => {
+            res.render('blog/index', page.viewData(blogs, results));
+        });
+    })
+    .catch(err => {
       router.renderError(res, err);
-    }
-    else {
-      page.one(byBlogUrl, (err, results) => {
-        if (err) {
-          router.renderError(res, err);
-        }
-        else {
-          // todo: see if there's a cleaner way of 
-          // handling this chain. Next, assign blogs
-          // to sidebar and/or nav.
-          res.render('blog/index', viewData(blogs, results));
-        }
-      });
-    }
-  });
+    });
 });
 
 module.exports = router;

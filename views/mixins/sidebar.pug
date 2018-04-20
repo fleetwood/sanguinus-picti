@@ -1,0 +1,31 @@
+mixin sidebar(menus)
+
+    // Sidebar
+    section.box
+    header
+        h3 Tattoos
+    
+        unless !menus.featuredTats
+        ul.divided
+            for tattoo in menus.featuredTats
+            li
+                a(href=`./tattoos/${tattoo.url}`)
+                p= tattoo.title
+                img(class='12u', src=tattoo.images.header)
+
+    footer
+        a.button.alt(href='#') Contact Us
+
+    section.box
+    header
+        h3 Blogs
+
+    ul.divided
+        unless !menus.featuredBlogs 
+        for blog in menus.featuredBlogs
+            li
+            a(href=`./blog/${blog.url}`)
+                = blog.title
+
+    footer
+        a.button.alt(href='./blogs') See All

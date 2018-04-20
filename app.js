@@ -16,6 +16,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.locals.moment = require('moment');
+app.locals.Page = require('./models/Page');
 
 app.use(logger('dev'));
 app.use(express.json());

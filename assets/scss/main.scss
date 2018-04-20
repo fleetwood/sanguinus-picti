@@ -1522,3 +1522,18 @@ $soft_white: #ccc;
 			}
 
 	}
+
+	/* My Stuff */
+	.gallery div {
+		max-height: 200px;
+		max-width: 200px;
+		overflow: hidden;
+		display: inline-block;
+		cursor: pointer;
+		opacity: 0.8;
+		transition: 0.5s;
+	}
+	
+	.gallery div:hover {
+		opacity: 1;
+	}

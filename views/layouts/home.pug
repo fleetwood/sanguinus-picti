@@ -3,7 +3,6 @@ extends base
 include ../mixins/banner
 include ../mixins/intro
 
-
 block append header
   // Banner
   +banner
@@ -16,10 +15,23 @@ block append content
     div(class='12u')
       // ADDED
       =content
-  .row
-    div(class='12u')
-      +portfolio_list
 
-  .row
-    div(class='12u')
-      +blog_list
+  unless !menus
+
+    unless !menus.featuredTats
+      .row
+        each tat in menus.featuredTats
+          div(class='12u')
+            article
+              a(href=`./blogs/${tat.url}`)
+                h3= tat.title
+              p= tat.summary
+
+    unless !menus.featuredBlogs
+      .row
+        each blog in menus.featuredBlogs
+          div(class='12u')
+            article
+              a(href=`./blogs/${blog.url}`)
+                h3= blog.title
+              p= blog.summary

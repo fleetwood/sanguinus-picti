@@ -11,14 +11,19 @@ mixin navbar(active)
 
             li(class=`${active == 'tattoos' ? 'current' : ''}`)
                 a(href='/tattoos') Tattoos
-            
+                unless !menus.featuredTats
+                    ul
+                        for tattoo in menus.featuredTats
+                            li
+                            a(href=`./tattoos/${tattoo.url}`)= tattoo.title
+
             li(class=`${active == 'about' ? 'current' : ''}`)
                 a(href='/about') About Us
 
             li(class=`${active == 'blog' ? 'current' : ''}`)
                 a(href='/blog') Blog
-                if bloglist
+                unless !menus.featuredBlogs
                     ul
-                        for blog in bloglist
+                        for blog in menus.featuredBlogs
                             li
                                 a(href=`./blog/${blog.url}`)= blog.title

@@ -1,37 +1,23 @@
 const page = require('../models/Tattoo');
 const router = require('../helpers/Router');
 
-const viewData = (tattoos, data) => {
-  return {
-    title: 'Tattoo',
-    current: 'tattoo',
-    tattoolist: tattoos,
-    data: data
-  }
-};
-
 /* GET home page. */
 router.get('/tattoos', (res) => {
-  page.featuredTattooList((err, tattoos) => {
-    if (err) {
-      router.renderError(res, err);
-    }
-    else {
+  page.getMenus()
+    .then(menus =>  {
       page.all({
         name: page.tables.views.page_author, 
         where: { pageType: page.pageType },
         orderCol: page.tables.postDate,
         orderDir: page.tables.sort.desc
-      }, (err, results) => {
-        if (err) {
-          router.renderError(res, err);
-        }
-        else {
-          res.render('tattoos/list', viewData(tattoos, results));
-        }
-      });
-    }
-  });
+      })
+      .then(results => {
+        res.render('tattoos/list', page.viewData(menus, results));
+      })
+    })
+    .catch(err => {
+      router.renderError(res, err);
+    });
 });
 
 /* GET home page. */
@@ -43,21 +29,16 @@ router.get('/tattoos/:url', (res) => {
     }
   };
 
-  page.featuredTattooList((err, tattoos) => {
-    if (err) {
+  page.getMenus()
+    .then(menus => {
+      page.one(byTattooUrl)  
+        .then(results => {
+          res.render('tattoos/index', page.viewData(menus, results));
+        });
+    })
+    .catch(err => {
       router.renderError(res, err);
-    }
-    else {
-      page.one(byTattooUrl, (err, results) => {
-        if (err) {
-          router.renderError(res, err);
-        }
-        else {
-          res.render('tattoos/index', viewData(tattoos, results));
-        }
-      });
-    }
-  });
+    });
 });
 
 module.exports = router;

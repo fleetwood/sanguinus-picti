@@ -17,6 +17,8 @@ class KnexModel {
     return {
       all: '*',
       pages: 'pages',
+      blog: 'blog',
+      tattoos: 'tattoos',
       postDate: 'postDate',
       sort: {
         asc: 'asc',
@@ -69,130 +71,198 @@ class KnexModel {
    * Get all entities matching options criteria
    * @see KnexOptions
    * @param {KnexOptions} params 
-   * @param {Function} done 
+   * @returns Promise(resolve, reject)
    */
-  all(params, done) {
+  all(params) {
     const options = this.KnexOptions(params);
-    const k = knex
-      .debug(true)
-      .select(options.select)
-      .from(options.name)
-      .where(options.where)
-      .orderBy(options.orderCol, options.orderDir)
-      .then(results => done(null, results))
-      .catch(err => done(err));
-    console.log(k.toString());
+    return new Promise((resolve, reject) => {
+      const k = knex
+        .debug(true)
+        .select(options.select)
+        .from(options.name)
+        .where(options.where)
+        .orderBy(options.orderCol, options.orderDir)
+        .then(results => resolve(results))
+        .catch(err => reject(err));
+      console.log(k.toString());
+    });
   }
 
   /**
    * Get a single entity
    * @param {KnexOptions} params
    * @see KnexOptions
-   * @param {Function} done 
+   * @returns Promise(resolve, reject)
    */
-  one(params, done) {
+  one(params) {
     const options = this.KnexOptions(params);
-    knex
-      .debug(true)
-      .select(options.select)
-      .from(options.name)
-      .where(options.where)
-      .orderBy(options.orderCol, options.orderDir)
-      .then(results => done(null, results[0]))
-      .catch(err => done(err));
-  }
+    return new Promise((resolve, reject) => {
+        knex
+        .debug(true)
+        .select(options.select)
+        .from(options.name)
+        .where(options.where)
+        .orderBy(options.orderCol, options.orderDir)
+        .then(results => resolve(results[0]))
+        .catch(err => reject(err));
+      });
+    }
 
-  join(params, done) {
+    /**
+     * 
+     * @param {*} params 
+     * @returns Promise(resolve, reject)
+     */
+  join(params) {
     const options = this.KnexOptions(params);
-    const sql = knex.select(options.select)
+    return new Promise((resolve, reject) => {
+      const sql = knex.select(options.select)
       .from(options.name)
       .where(options.where)
       .join(options.join, options.joinon)
-      .orderBy(options.orderCol, options.orderDir);
-    
-    console.log(sql.toString());
-    
-    return sql
-      .then(results => done(null, results))
-      .catch(err => done(err));
+      .orderBy(options.orderCol, options.orderDir)
+      .then(results => resolve(results))
+      .catch(err => reject(err));
+      console.log(sql.toString());
+    });
   }
 
   /**
  * Get all featured blogs
- * @param {function} done 
+ * @returns Promise( resolve, reject)
  */
-  featuredBlogList(done) {
+  featuredBlogList() {
     return this.all({
       name: KnexModel.tables.views.page_author,
       where: {featured: true, pageType: KnexModel.pageTypes.blog},
       orderCol: this.tables.postDate, 
       orderDir: this.tables.sort.desc
-    }, done);
+    });
   }
 
   /**
  * Get all featured tattoos
- * @param {function} done 
+ * @returns Promise( resolve, reject) 
  */
-  featuredTattooList(done) {
+  featuredTattooList() {
     return this.all({
       name: KnexModel.tables.views.page_author,
       where: {featured: true, pageType: KnexModel.pageTypes.tattoos},
       orderCol: this.tables.postDate, 
       orderDir: this.tables.sort.desc
-    }, done);
+    });
   }
 
-  insert(data, done) {
-    const validation = this.validate(data);
-    if (validation.valid) {
-      knex.insert(data)
+  /**
+   * Get featuredBlogs, featuredTats, allBlogs, allTats
+   * @returns Promise(resolve, reject)
+   */
+  getMenus() {
+    const tables = KnexModel.tables;
+    const allBlogOptions = {
+      name: tables.pages,
+      where: { pageType: tables.blog},
+      orderCol: tables.postDate,
+      orderDir: tables.sort.desc
+    };
+    const allTatOptions = {
+      name: tables.pages,
+      where: { pageType: tables.tattoos},
+      orderCol: tables.postDate,
+      orderDir: tables.sort.desc
+    };
+    return new Promise((resolve, reject) => {
+      this.featuredBlogList()
+        .then((featuredBlogs) => {
+          this.featuredTattooList()
+          .then((featuredTats) => {
+            this.all(allBlogOptions)
+            .then((allBlogs) => {
+              this.all(allTatOptions)
+              .then((allTats) => {
+                resolve({
+                  featuredBlogs,
+                  featuredTats,
+                  allBlogs,
+                  allTats
+                });
+              })
+            })
+          })
+      })
+      .catch(err => reject(err));
+    });
+  }
+
+  /**
+   * 
+   * @param {*} data 
+   * @returns Promise(resolve, reject)
+   */
+  insert(data) {
+    return new Promise((resolve,reject) => {
+      const validation = this.validate(data);
+      if (validation.valid) {
+        knex.insert(data)
         .into(this.tableName)
         .then(result => {
           knex.select('*')
-            .from(this.tableName)
-            .where({ id: result[0] })
-            .then(entity => done(null, entity[0]))
-            .catch(err => done(err))
-            ;
+          .from(this.tableName)
+          .where({ id: result[0] })
+          .then(entity => resolve(entity[0]))
+          .catch(err => reject(err))
+          ;
         })
-        .catch(err => done(err))
+        .catch(err => reject(err))
         ;
-    } else {
-      done(validation.errors);
-    }
+      } else {
+        reject(new Error('Validation errors :' + validation.errors.toString()));
+      }
+    })
   };
 
-  update(entityId, entity, done) {
-    const validation = this.validate(entity, true);
-    if (validation.valid) {
-      knex(this.tableName)
+  /**
+   * 
+   * @param {*} entityId 
+   * @param {*} entity 
+   * @returns Promise(resolve, reject)
+   */
+  update(entityId, entity) {
+    return new Promise((resolve, reject) => {
+      const validation = this.validate(entity, true);
+      if (validation.valid) {
+        knex(this.tableName)
         .where('id', entityId)
         .update(entity)
         .then(() => {
           knex.select('*')
-            .from(this.tableName)
-            .where({ id: entityId })
-            .then(updated => done(null, updated[0]))
-            .catch(err => done(err))
-            ;
+          .from(this.tableName)
+          .where({ id: entityId })
+          .then(updated => resolve(updated[0]))
+          .catch(err => reject(err))
+          ;
         })
-        .catch(err => done(err))
+        .catch(err => reject(err))
         ;
-    } else {
-      done(validation.errors);
-    }
+      } else {
+        reject(new Error('Validation errors: '+ validation.errors.toString()));
+      }
+    })
   };
 
-  delete(entityId, done) {
-    knex(this.tableName)
+  /**
+   * 
+   * @param {*} entityId 
+   * @returns Promise(knex)
+   * @see knex
+   */
+  delete(entityId) {
+    return knex(this.tableName)
       .where('id', entityId)
       .delete()
       .then(() => done(null))
-      .catch(err => done(err))
-      ;
-  }
-
+      .catch(err => done(err));
+  };
 };
 
 module.exports = KnexModel;

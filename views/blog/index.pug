@@ -5,8 +5,10 @@ block page_content
     img(src=data.images.header, class="12u")
     header
       h2= data.title
-    div= data.body
-    for image in data.images.gallery
-      img(src=image class="4u 12u(mobile)")
-    div
+    .row
+      div= data.body
+    .row
+      for image in data.images.gallery
+        div(style=`background: url(${image}); height: 200px; width: 200px` class="4u 12u(mobile)")
+    .row
       | Posted by: #{data.name} on #{recentDate(data.postDate)}

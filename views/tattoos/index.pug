@@ -5,8 +5,14 @@ block page_content
     img(src=data.images.header, class="12u")
     header
       h2= data.title
-    div= data.body
-    for image in data.images.gallery
-      img(src=image class="4u 12u(mobile)")
-    div
+
+    section
       | Posted by: #{data.name} on #{recentDate(data.postDate)}
+    
+    section= data.body
+    
+    section.gallery
+      for image in data.images.gallery
+        div(class="4u 12u(mobile)")
+          img(src=image, class='gallery-image')
+    
