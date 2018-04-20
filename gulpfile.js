@@ -11,13 +11,15 @@ var rename = require('gulp-rename');
 var paths = {
     src : {
         sass: 'assets/scss/*.scss',
-        scripts: ['assets/scripts/*.js', '!assets/scripts/*.min.js']
+        scripts: ['assets/scripts/*.js', '!assets/scripts/*.min.js'],
+        unitegallery: 'assets/unitegallery/**/*.*'
     },
     dest: {
         root: 'public',
         jsmin: 'all.min.js',
         sass: 'public/css',
-        scripts: 'public/js'
+        scripts: 'public/js',
+        unitegallery: 'public/unitegallery'
     }
 };
 
@@ -45,6 +47,12 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest(paths.dest.scripts));
 });
 
+// Unitegallery
+gulp.task('unitegallery',function(){
+    return gulp.src([paths.src.unitegallery]) 
+    .pipe(gulp.dest(paths.dest.unitegallery));
+  });
+
 // Watch Files For Changes
 gulp.task('watch', function() {
     // gulp.watch(paths.src.scripts, ['lint', 'scripts']);
@@ -53,4 +61,4 @@ gulp.task('watch', function() {
 
 // Default Task
 // gulp.task('default', ['lint', 'sass', 'scripts', 'watch']);
-gulp.task('default', ['sass', 'scripts', 'watch']);
+gulp.task('default', ['sass', 'scripts', 'unitegallery', 'watch']);

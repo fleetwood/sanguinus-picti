@@ -9,21 +9,22 @@ mixin navbar(active)
             li(class=`${active == 'work' ? 'current' : ''}`)
                 a(href='/work') Our Work
 
-            li(class=`${active == 'tattoos' ? 'current' : ''}`)
-                a(href='/tattoos') Tattoos
-                unless !menus.featuredTats
-                    ul
-                        for tattoo in menus.featuredTats
-                            li
-                            a(href=`./tattoos/${tattoo.url}`)= tattoo.title
-
             li(class=`${active == 'about' ? 'current' : ''}`)
                 a(href='/about') About Us
 
-            li(class=`${active == 'blog' ? 'current' : ''}`)
-                a(href='/blog') Blog
+            unless !menus
+                unless !menus.featuredTats
+                    li(class=`${active == 'tattoos' ? 'current' : ''}`)
+                        a(href='/tattoos') Tattoos
+                            ul
+                                for tattoo in menus.featuredTats
+                                    li
+                                        a(href=`/tattoos/${tattoo.url}`)= tattoo.title
+
                 unless !menus.featuredBlogs
-                    ul
-                        for blog in menus.featuredBlogs
-                            li
-                                a(href=`./blog/${blog.url}`)= blog.title
+                    li(class=`${active == 'blog' ? 'current' : ''}`)
+                        a(href='/blog') Blog
+                            ul
+                                for blog in menus.featuredBlogs
+                                    li
+                                        a(href=`/blog/${blog.url}`)= blog.title

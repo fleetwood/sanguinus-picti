@@ -30,11 +30,11 @@ router.get('/blog/:url', (res) => {
     }
   };
 
-  page.featuredBlogList()
-    .then(blogs => {
+  page.getMenus()
+    .then(menus => {
       page.one(byBlogUrl)
         .then(results => {
-            res.render('blog/index', page.viewData(blogs, results));
+            res.render('blog/index', page.viewData(menus, results));
         });
     })
     .catch(err => {

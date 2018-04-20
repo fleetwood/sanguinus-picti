@@ -1,10 +1,15 @@
 mixin scripts
 
     // Scripts
-    script(src='/js/jquery.min.js')
     script(src='/js/jquery.dropotron.min.js')
     script(src='/js/skel.min.js')
     script(src='/js/skel-viewport.min.js')
     //if lte IE 8
         script(src='/js/ie/respond.min.js')
     script(src='/js/all.min.js')
+
+    script(src='/unitegallery/js/unitegallery.min.js')
+    script(src='/unitegallery/themes/tiles/ug-theme-tiles.js')
+
+    block scripts
+    =scripts

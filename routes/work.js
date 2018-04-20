@@ -7,7 +7,8 @@ const page = new Page('Work', 'work');
 router.get('/work', (res) => {
   page.getMenus()
     .then(menus => {
-      res.render('work', page.viewData(menus, {}));
+      const data = page.viewData(menus, {});
+      res.render('work', data);
     })
     .catch(err => {
       router.renderError(res, err);

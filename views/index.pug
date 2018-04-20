@@ -1,8 +1,9 @@
 extends ./layouts/home
 
-block content
+block append content
   section
     header.major
       h2= title
     
-    .row= content
+    .row
+      block page_content
