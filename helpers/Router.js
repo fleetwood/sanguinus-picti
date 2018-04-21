@@ -47,6 +47,7 @@ class Router {
     }
 
     get(url, callback) {
+        //todo: implementing multer...
         this.router.get(url, function (req, res, next) {
             callback(res);
         });

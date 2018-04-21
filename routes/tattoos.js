@@ -20,16 +20,11 @@ router.get('/tattoos', (res) => {
     });
 });
 
-/* GET create page */
-router.get('/tattoos/create', (res) => {
-  page.getMenus()
-    .then(menus => {
-      res.render('tattoos/create', page.viewData(menus, {}));
-    })
-    .catch(err => {
-      router.renderError(res, err);
-    })
-});
+//todo: implementing multer
+// router.post('/photos/upload', router.upload.array('photos', 12), function (req, res, next) {
+//   // req.files is array of `photos` files
+//   // req.body will contain the text fields, if there were any
+// });
 
 /* GET single tattoo */
 router.get('/tattoos/:url', (res) => {

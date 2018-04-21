@@ -1,0 +1,68 @@
+extends ./layouts/full
+
+block page_content
+    article.box.post
+        
+        section
+            h3 Upload images
+            form(action="/file-upload", class="dropzone")
+                .fallback
+                    input(name="file", type="file", multiple)
+
+        section
+            form.form-horizontal
+                fieldset
+                    // Form Name
+                    h3 New Page
+                    // Text input
+                    .form-group
+                        label.col-md-4.control-label(for='title', placeholder="Title")
+                        .col-md-5
+                            input#title.form-control.input-md(name='title', type='text', placeholder='Title', required='Needs a title!')
+                            span.help-block Give it a snazzy title
+                    // Text input
+                    .form-group
+                        label.col-md-4.control-label(for='textinput', placeholder="Url")
+                        .col-md-5
+                            input#textinput.form-control.input-md(name='textinput', type='text', placeholder='url', required='Did you delete the url?')
+                            span.help-block Don't change if not necessary
+                    // Textarea
+                    .form-group
+                        label.col-md-4.control-label(for='summary', placeholder="Summary", required="Summary pls.")
+                        .col-md-4
+                            textarea#summary.form-control(name='summary', placeholder="Short but sweet.")
+                    // Textarea
+                    .form-group
+                        label.col-md-4.control-label(for='trumbowyg') Body
+                        .col-md-4
+                            textarea#trumbowyg.form-control(name='trumbowyg', placeholder="Say some good stuff.", required="Say something nice.")
+                    // Multiple Radios
+                    .form-group
+                        label.col-md-4.control-label(for='pageType') Page Type
+                        .col-md-4
+                            .radio
+                                label(for='pageType-0')
+                                    input#pageType-0(type='radio', name='pageType', value='blog', checked='checked')
+                                    |       Blog
+                            .radio
+                                label(for='pageType-1')
+                                    input#pageType-1(type='radio', name='pageType', value='tattoo')
+                                    |       Tattoo
+                    // Button (Double)
+                    .form-group
+                        label.col-md-4.control-label(for='save')
+                        .col-md-8
+                            button#save.button(name='save') Save
+                            button#cancel.button.alt(name='cancel') Cancel
+
+                Create
+
+block append scripts
+    script(src='/js/dropzone.min.js')
+    script(src="/trumbo/trumbowyg.min.js")
+    script.
+        $("dropzone").dropzone({ 
+            url: "/file/post",
+            uploadMultiple: true,
+        });
+        $('#trumbowyg').trumbowyg();

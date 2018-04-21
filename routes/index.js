@@ -14,4 +14,16 @@ router.get('/', (res) => {
     });
 });
 
+
+/* GET create page */
+router.get('/new-page', (res) => {
+  page.getMenus()
+    .then(menus => {
+      res.render('create', page.viewData(menus, {}));
+    })
+    .catch(err => {
+      router.renderError(res, err);
+    })
+});
+
 module.exports = router;
