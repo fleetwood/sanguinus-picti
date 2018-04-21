@@ -9,19 +9,15 @@ include ../mixins/scripts
     var now = new moment();
     var then = new moment(date);
     if (now.diff(date, 'minutes') < 10) {
-      console.log('diff: '+now.diff(date, 'minutes'));
       return 'just now';
     }
     else if (now.diff(date, 'minutes') < 60) {
-      console.log('diff: '+now.diff(date, 'minutes'));
       return now.diff(date, 'minutes') + 'min ago';
     }
     else if (now.diff(date, 'hours') < 24) {
-      console.log('diff: '+now.diff(date, 'hours'));
       return now.diff(date, 'hours') + 'h ago';
     }
     else if (now.diff(date, 'days') < 7) {
-      console.log('diff: '+now.diff(date, 'days'));
       return now.diff(date, 'days') + 'd ago';
     }
     return 'on ' + moment(date).format('YYYY/MM/DD'); 
@@ -38,11 +34,12 @@ html
     link(rel='stylesheet', href='/css/main.css')
     //if lte IE 8
       link(rel='stylesheet', href='/css/ie8.css')
-      
-    script(src='/js/jquery.min.js')
 
     link(rel='stylesheet', href='/unitegallery/css/unite-gallery.css', type='text/css')
     link(rel='stylesheet', href='/unitegallery/themes/default/ug-theme-default.css', type='text/css')
+    link(rel='stylesheet', href='/css/dropzone.min.css', type='text/css')
+
+    script(src='/js/jquery.min.js')
 
   body.homepage
     #page-wrapper

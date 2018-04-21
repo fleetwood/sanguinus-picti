@@ -1,0 +1,14 @@
+extends ../layouts/left
+
+block page_content
+    form(action="/file-upload", class="dropzone")
+        .fallback
+            input(name="file", type="file", multiple)
+
+block append scripts
+    script(src='/js/dropzone.min.js')
+    script.
+        $("dropzone").dropzone({ 
+            url: "/file/post",
+            uploadMultiple: true,
+        });
