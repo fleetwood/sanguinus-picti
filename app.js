@@ -1,16 +1,16 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var workRouter = require('./routes/work');
-var aboutRouter = require('./routes/about');
-var tatRouter = require('./routes/tattoos');
-var blogRouter = require('./routes/blog');
+const indexRouter = require('./routes/index');
+const workRouter = require('./routes/work');
+const aboutRouter = require('./routes/about');
+const tatRouter = require('./routes/tattoos');
+const blogRouter = require('./routes/blog');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

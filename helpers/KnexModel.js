@@ -11,6 +11,7 @@ class KnexModel {
     this.tableName = definition.tableName;
     this.key = definition.key;
     this.schema = definition.schema;
+    this._debug = false;
   }
 
   static get tables() { 
@@ -41,6 +42,9 @@ class KnexModel {
     };
   };
 
+  get debug() {
+    return this._debug;
+  }
   /**
    * Validate the data against the model schema
    * @param {JSON} data 
@@ -77,7 +81,7 @@ class KnexModel {
     const options = this.KnexOptions(params);
     return new Promise((resolve, reject) => {
       const k = knex
-        .debug(true)
+        .debug(this.debug)
         .select(options.select)
         .from(options.name)
         .where(options.where)
@@ -98,7 +102,7 @@ class KnexModel {
     const options = this.KnexOptions(params);
     return new Promise((resolve, reject) => {
         knex
-        .debug(true)
+        .debug(this.debug)
         .select(options.select)
         .from(options.name)
         .where(options.where)

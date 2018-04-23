@@ -1,7 +1,6 @@
 const config = require('../config/config');
 const knex = require('../database/knex');
 const express = require('express');
-const upload = require('multer');
 const router = express.Router();
 
 class Router {
@@ -10,7 +9,6 @@ class Router {
         this._knex = knex;
         this._express = express;
         this._router = router;
-        this._upload = upload;
     }
 
     /**
@@ -42,13 +40,14 @@ class Router {
         return this._router;
     }
 
-    get upload() {
-        return this._upload;
-    }
-
     get(url, callback) {
-        //todo: implementing multer...
         this.router.get(url, function (req, res, next) {
+            callback(res);
+        });
+    }
+    
+    post(url, callback) {
+        this.router.post(url, function (req, res, next) {
             callback(res);
         });
     }

@@ -5,11 +5,12 @@ block page_content
         
         section
             h3 Upload images
-            form(action="/file-upload", class="dropzone")
-                .fallback
-                    input(name="file", type="file", multiple)
+                form#uploadForm( enctype="multipart/form-data", action="/upload", method="post")
+                    input(type="file", name="userPhoto", multiple)
+                    input(type="submit", value="Upload Image", name="submit")
+            span#status
 
-        section
+        //- section
             form.form-horizontal
                 fieldset
                     // Form Name
@@ -58,11 +59,21 @@ block page_content
                 Create
 
 block append scripts
-    script(src='/js/dropzone.min.js')
     script(src="/trumbo/trumbowyg.min.js")
+    script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
     script.
-        $("dropzone").dropzone({ 
-            url: "/file/post",
-            uploadMultiple: true,
+        $(document).ready(function() {
+            $('#trumbowyg').trumbowyg();
+            //- $("dropzone").dropzone({ 
+            //-     url: "/file/post",
+            //-     uploadMultiple: true,
+            //- });
+            $('#uploadForm').submit(function() {
+            $("#status").empty().text("File is uploading...");
+            $(this).ajaxSubmit({
+                    error: (xhr) => { status('Error: ' + xhr.status); },
+                    success: (response) => { $("#status").empty().text(response); }
+                });
+                return false;
+            });
         });
-        $('#trumbowyg').trumbowyg();

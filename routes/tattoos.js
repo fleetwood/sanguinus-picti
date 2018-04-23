@@ -20,12 +20,6 @@ router.get('/tattoos', (res) => {
     });
 });
 
-//todo: implementing multer
-// router.post('/photos/upload', router.upload.array('photos', 12), function (req, res, next) {
-//   // req.files is array of `photos` files
-//   // req.body will contain the text fields, if there were any
-// });
-
 /* GET single tattoo */
 router.get('/tattoos/:url', (res) => {
   const byTattooUrl = {
