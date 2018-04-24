@@ -45,7 +45,10 @@ router.post('/upload', function (res) {
     if (err) {
       return res.status(500).send(`Error uploading file. ${err.message}`);
     }
-    res.status(200).send("File is uploaded");
+    const results = res.req.files.map(file => {
+      return `/images/${file.filename}`;
+    });
+    res.status(200).send(results);
   });
 });
 

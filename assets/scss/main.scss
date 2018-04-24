@@ -59,7 +59,7 @@ $soft_white: #ccc;
 
 	body {
 		background: $base_gray_1;
-		background-image: url('images/bg.png');
+		background-image: url('/images/bg.png');
 		font-family: 'Source Sans Pro';
 		font-weight: 300;
 		color: $text_gray_1;
@@ -655,7 +655,7 @@ $soft_white: #ccc;
 
 	#main-wrapper {
 		position: relative;
-		background: $base_gray_1 url('images/bg.png');
+		background: $base_gray_1 url('/images/bg.png');
 
 		&:before {
 			content: '';
@@ -663,7 +663,7 @@ $soft_white: #ccc;
 			top: 0;
 			left: 0;
 			width: 100%;
-			background: url('images/bg.png');
+			background: url('/images/bg.png');
 			background-size: 100% 100%;
 			z-index: 0;
 			opacity: 0.1;
@@ -671,7 +671,7 @@ $soft_white: #ccc;
 
 		.major {
 			h2 {
-				background: #f7f7f7 url('images/bg.png');
+				background: #f7f7f7 url('/images/bg.png');
 			}
 		}
 	}
@@ -686,7 +686,7 @@ $soft_white: #ccc;
 			top: 0;
 			left: 0;
 			width: 100%;
-			background: url('images/bg.png');
+			background: url('/images/bg.png');
 			background-size: 100% 100%;
 			z-index: 0;
 			opacity: 0.5;
@@ -1371,7 +1371,7 @@ $soft_white: #ccc;
 				width: _size(navPanel);
 				z-index: _misc(z-index-base) + 2;
 				color: #858484;
-				background-image: url('images/bg.png');
+				background-image: url('/images/bg.png');
 				box-shadow: inset -3px 0px 5px 0px rgba(0, 0, 0, 0.35);
 
 				.link {
