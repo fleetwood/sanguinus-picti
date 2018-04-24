@@ -25,7 +25,7 @@ block page_content
                     .form-group
                         label.col-md-4.control-label(for='textinput', placeholder="Url") Url
                         .col-md-5
-                            input#url.form-control.input-md(name='textinput', type='text', placeholder='This will auto-fill from title', required='Did you delete the url?', disabled='true')
+                            input#url.form-control.input-md(name='url', type='text', placeholder='This will auto-fill from title', required='Did you delete the url?', disabled='true')
                     // Textarea
                     .form-group
                         label.col-md-4.control-label(for='summary', required="Summary pls.") Summary
@@ -34,13 +34,13 @@ block page_content
                     .form-group
                         label.col-med-4.control-label(for='images', placeholder='Images') Gallery
                         .col-md-4
-                            input#images.form-control.input-md(name='textinput', type='text', required='Did you delete the url?', disabled='true')
+                            input#images.form-control.input-md(name='images', type='text', required='Did you delete the url?', disabled='true')
                             #gallery(style="display:none;")
                     // Textarea
                     .form-group
-                        label.col-md-4.control-label(for='trumbowyg') Body
+                        label.col-md-4.control-label(for='body') Body
                         .col-md-4
-                            textarea#body.form-control(name='trumbowyg', placeholder="Say some good stuff.", required="Say something nice.")
+                            textarea#body.form-control(name='body', placeholder="Say some good stuff.", required="Say something nice.")
                     // Multiple Radios
                     .form-group
                         label.col-md-4.control-label(for='pageType') Page Type
@@ -118,6 +118,26 @@ block append scripts
                         });
                         images.val(gallery);
                         initGallery(gallery);
+                    }
+                });
+                return false;
+            });
+            $('#save').click(function() {
+                const data = {
+                    title: $('#title').val(),
+                    url: $('#url').val(),
+                    summary: $('#summary').val(),
+                    images: $('#images').val(),
+                    body: $('#body').val(),
+                    pagetype: $('input[name=pageType]:checked').val(),
+                };
+                $.ajax({
+                    data: data,
+                    url: '/create',
+                    type: 'POST',
+                    error: (xhr) => { status('Error: ' + xhr.status); },
+                    success: (response) => {
+                        console.log('Got a response');
                     }
                 });
                 return false;

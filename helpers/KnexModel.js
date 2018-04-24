@@ -88,10 +88,12 @@ class KnexModel {
         .orderBy(options.orderCol, options.orderDir)
         .then(results => resolve(results))
         .catch(err => reject(err));
-      console.log(k.toString());
+      if (this.debug) {
+        console.log(k.toString());
+      }
     });
   }
-
+  
   /**
    * Get a single entity
    * @param {KnexOptions} params
@@ -110,9 +112,9 @@ class KnexModel {
         .then(results => resolve(results[0]))
         .catch(err => reject(err));
       });
-    }
-
-    /**
+  }
+  
+  /**
      * 
      * @param {*} params 
      * @returns Promise(resolve, reject)
@@ -132,9 +134,9 @@ class KnexModel {
   }
 
   /**
- * Get all featured blogs
- * @returns Promise( resolve, reject)
- */
+   * Get all featured blogs
+   * @returns Promise( resolve, reject)
+   */
   featuredBlogList() {
     return this.all({
       name: KnexModel.tables.views.page_author,
@@ -145,9 +147,9 @@ class KnexModel {
   }
 
   /**
- * Get all featured tattoos
- * @returns Promise( resolve, reject) 
- */
+   * Get all featured tattoos
+   * @returns Promise( resolve, reject)
+   */
   featuredTattooList() {
     return this.all({
       name: KnexModel.tables.views.page_author,

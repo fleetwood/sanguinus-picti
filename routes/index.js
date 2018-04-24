@@ -52,6 +52,12 @@ router.post('/upload', function (res) {
   });
 });
 
+router.post('/create', function(res) {
+  const data = res.req.body;
+  console.log('Got data....');
+  res.status(200).send('got a response');
+});
+
 router.post('/add-page', function (res) {
   console.log('check form fields');
   res.status(200).send("File is uploaded");
