@@ -34,6 +34,7 @@ block page_content
                     .form-group
                         label.col-med-4.control-label(for='images', placeholder='Images') Gallery
                         .col-md-4
+                            input#images.form-control.input-md(name='textinput', type='text', required='Did you delete the url?', disabled='true')
                             #gallery(style="display:none;")
                     // Textarea
                     .form-group
@@ -92,10 +93,7 @@ block append scripts
                 const gallery = $('#gallery');
                 gallery.css('display','none');
                 gallery.empty();
-                for(var image in images) {
-                    var img = images[image];
-                    gallery.append(`<img src='${img}' data-image='${img}' alt='' />`);
-                }
+                images.forEach(img => gallery.append(`<img src='${img}' data-image='${img}' alt='' />`));
                 gallery.unitegallery({
                     gallery_theme: "tiles",
                     lightbox_type: "compact"
@@ -110,16 +108,16 @@ block append scripts
                 $("#status").empty().text("File is uploading...");
                 $(this).ajaxSubmit({
                     error: (xhr) => { status('Error: ' + xhr.status); },
-                    success: (response) => { 
-                        $("#status").empty().text(response);
-                        initGallery([
-                            '/images/trm_hand.jpg',
-                            '/images/trm_v12.jpg',
-                            '/images/trm_fb_banner.jpg',
-                            '/images/trm_tw_banner.jpg',
-                            '/images/trm_gudruna.jpg',
-                            '/images/trm_statue.jpg'
-                        ]);
+                    success: (response) => {
+                        const images = $('#images');
+                        let gallery = images.val().length > 0 ? images.val().split(',') : [];
+                        response.forEach(a => {
+                            if (gallery.indexOf(a) < 0) {
+                                gallery.push(a);
+                            }
+                        });
+                        images.val(gallery);
+                        initGallery(gallery);
                     }
                 });
                 return false;
