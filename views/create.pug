@@ -25,8 +25,7 @@ block page_content
                     .form-group
                         label.col-md-4.control-label(for='textinput', placeholder="Url") Url
                         .col-md-5
-                            input#url.form-control.input-md(name='textinput', type='text', placeholder='url', required='Did you delete the url?')
-                            span.help-block Don't change if not necessary
+                            input#url.form-control.input-md(name='textinput', type='text', placeholder='This will auto-fill from title', required='Did you delete the url?', disabled='true')
                     // Textarea
                     .form-group
                         label.col-md-4.control-label(for='summary', required="Summary pls.") Summary
@@ -69,16 +68,24 @@ block append scripts
         $(document).ready(function() {
 
             function makeUrl(str) {
+                str = str.trim();
                 const spaces = /\s+/g;
                 const nonalpha = /[^[A-Za-z0-9\-]+/g;
-                const doubles = /[\-{2,}]+/g
-                const l = 12;
+                const doubles = /[\-{2,}]+/g;
+                const max = 24;
                 function check(item, repl) {
                     str = str.replace(item, repl);
                 }
                 check(spaces, '-');
                 check(nonalpha, '');
                 check(doubles, '-');
+                if (str.length >= max) {
+                    str = str.substr(0, max);
+                    const fullwordsonly = str.lastIndexOf('-');
+                    if (fullwordsonly > 0) {
+                        str = str.substr(0,fullwordsonly);
+                    }
+                }
                 return str;
             }
             function initGallery(images = []) {
