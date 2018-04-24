@@ -14,11 +14,6 @@ block page_content
     #gallery(style="display:none;")
       for image in data.images.gallery
         img(src=image, data-image=image, alt='')
-		
-    //- section.gallery
-    //-   for image in data.images.gallery
-    //-     div(class="4u 12u(mobile)")
-    //-       img(src=image, class='gallery-image')
     
     block append scripts
       script(src='/unitegallery/themes/tiles/ug-theme-tiles.js')

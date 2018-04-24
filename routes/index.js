@@ -41,14 +41,17 @@ router.get('/new-page', (res) => {
 });
 
 router.post('/upload', function (res) {
-  upload(res.req, res, function (err, result) {
-    //console.log(req.body);
-    //console.log(req.files);
+  upload(res.req, res, function (err) {
     if (err) {
-      return res.end(`Error uploading file. ${err.message}`);
+      return res.status(500).send(`Error uploading file. ${err.message}`);
     }
-    res.end("File is uploaded");
+    res.status(200).send("File is uploaded");
   });
+});
+
+router.post('/add-page', function (res) {
+  console.log('check form fields');
+  res.status(200).send("File is uploaded");
 });
 
 module.exports = router;

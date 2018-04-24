@@ -10,33 +10,37 @@ block page_content
                     input(type="submit", value="Upload Image", name="submit")
             span#status
 
-        //- section
-            form.form-horizontal
+        section
+            form#new-page.form-horizontal
                 fieldset
                     // Form Name
                     h3 New Page
                     // Text input
                     .form-group
-                        label.col-md-4.control-label(for='title', placeholder="Title")
+                        label.col-md-4.control-label(for='title', placeholder="Title") Title
                         .col-md-5
                             input#title.form-control.input-md(name='title', type='text', placeholder='Title', required='Needs a title!')
                             span.help-block Give it a snazzy title
                     // Text input
                     .form-group
-                        label.col-md-4.control-label(for='textinput', placeholder="Url")
+                        label.col-md-4.control-label(for='textinput', placeholder="Url") Url
                         .col-md-5
-                            input#textinput.form-control.input-md(name='textinput', type='text', placeholder='url', required='Did you delete the url?')
+                            input#url.form-control.input-md(name='textinput', type='text', placeholder='url', required='Did you delete the url?')
                             span.help-block Don't change if not necessary
                     // Textarea
                     .form-group
-                        label.col-md-4.control-label(for='summary', placeholder="Summary", required="Summary pls.")
+                        label.col-md-4.control-label(for='summary', required="Summary pls.") Summary
                         .col-md-4
                             textarea#summary.form-control(name='summary', placeholder="Short but sweet.")
+                    .form-group
+                        label.col-med-4.control-label(for='images', placeholder='Images') Gallery
+                        .col-md-4
+                            #gallery(style="display:none;")
                     // Textarea
                     .form-group
                         label.col-md-4.control-label(for='trumbowyg') Body
                         .col-md-4
-                            textarea#trumbowyg.form-control(name='trumbowyg', placeholder="Say some good stuff.", required="Say something nice.")
+                            textarea#body.form-control(name='trumbowyg', placeholder="Say some good stuff.", required="Say something nice.")
                     // Multiple Radios
                     .form-group
                         label.col-md-4.control-label(for='pageType') Page Type
@@ -56,23 +60,60 @@ block page_content
                             button#save.button(name='save') Save
                             button#cancel.button.alt(name='cancel') Cancel
 
-                Create
 
 block append scripts
     script(src="/trumbo/trumbowyg.min.js")
+    script(src='/unitegallery/themes/tiles/ug-theme-tiles.js')
     script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
     script.
         $(document).ready(function() {
-            $('#trumbowyg').trumbowyg();
-            //- $("dropzone").dropzone({ 
-            //-     url: "/file/post",
-            //-     uploadMultiple: true,
-            //- });
+
+            function makeUrl(str) {
+                const spaces = /\s+/g;
+                const nonalpha = /[^[A-Za-z0-9\-]+/g;
+                const doubles = /[\-{2,}]+/g
+                const l = 12;
+                function check(item, repl) {
+                    str = str.replace(item, repl);
+                }
+                check(spaces, '-');
+                check(nonalpha, '');
+                check(doubles, '-');
+                return str;
+            }
+            function initGallery(images = []) {
+                const gallery = $('#gallery');
+                gallery.css('display','none');
+                gallery.empty();
+                for(var image in images) {
+                    var img = images[image];
+                    gallery.append(`<img src='${img}' data-image='${img}' alt='' />`);
+                }
+                gallery.unitegallery({
+                    gallery_theme: "tiles",
+                    lightbox_type: "compact"
+                });
+            };
+
+            $('#body').trumbowyg();
+            $('#title').keyup(() => {
+                $('#url').val(makeUrl($('#title').val()));
+            });
             $('#uploadForm').submit(function() {
-            $("#status").empty().text("File is uploading...");
-            $(this).ajaxSubmit({
+                $("#status").empty().text("File is uploading...");
+                $(this).ajaxSubmit({
                     error: (xhr) => { status('Error: ' + xhr.status); },
-                    success: (response) => { $("#status").empty().text(response); }
+                    success: (response) => { 
+                        $("#status").empty().text(response);
+                        initGallery([
+                            '/images/trm_hand.jpg',
+                            '/images/trm_v12.jpg',
+                            '/images/trm_fb_banner.jpg',
+                            '/images/trm_tw_banner.jpg',
+                            '/images/trm_gudruna.jpg',
+                            '/images/trm_statue.jpg'
+                        ]);
+                    }
                 });
                 return false;
             });
