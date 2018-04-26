@@ -1537,3 +1537,11 @@ $soft_white: #ccc;
 	.gallery div:hover {
 		opacity: 1;
 	}
+	
+	option.header-image {
+		background-repeat: no-repeat !important;
+		padding-left: 20px;
+	  }
+	.header-image .ui-icon {
+		background-position: left top;
+	}

@@ -1,6 +1,9 @@
 const Page = require('../models/Page');
+const Blog = require('../models/Blog');
+const Tattoo = require('../models/Tattoo');
 const router = require('../helpers/Router');
 const multer = require('multer');
+const moment = require('moment');
 
 const page = new Page('Home', 'home');
 const formidable = require('formidable');
@@ -40,6 +43,7 @@ router.get('/new-page', (res) => {
     })
 });
 
+/* POST upload images */
 router.post('/upload', function (res) {
   upload(res.req, res, function (err) {
     if (err) {
@@ -52,15 +56,34 @@ router.post('/upload', function (res) {
   });
 });
 
+/* POST create the new page */
 router.post('/create', function(res) {
   const data = res.req.body;
-  console.log('Got data....');
-  res.status(200).send('got a response');
-});
+  const page = data.pagetype == Page.pageTypes.tattoo ? Tattoo : Blog;
 
-router.post('/add-page', function (res) {
-  console.log('check form fields');
-  res.status(200).send("File is uploaded");
+  const pageData = {
+    // todo: grab the logged in user
+    author_id: 1,
+    featured: data.featured === "on",
+    title: data.title,
+    summary: data.summary,
+    body: data.body,
+    pageType: data.pagetype,
+    url: data.url,
+    postDate: moment(new Date()).format('YYYY/MM/DD hh:mm:ss'),
+    images: {
+      header: data.header,
+      gallery: data.gallery
+    }
+  };
+
+  page.insert(pageData)
+    .then(results => {
+      res.status(200).send({success: results, page: page});
+    })
+    .catch(err => {
+      res.status(500).send(JSON.stringify(err, null, 2));
+    });
 });
 
 module.exports = router;

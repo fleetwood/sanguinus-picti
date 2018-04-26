@@ -4,10 +4,10 @@ block page_content
     article.box.post
         
         section
-            h3 Upload images
+            h3 Upload images for gallery
                 form#uploadForm( enctype="multipart/form-data", action="/upload", method="post")
                     input(type="file", name="userPhoto", multiple)
-                    input(type="submit", value="Upload Image", name="submit")
+                    input(type="submit", value="Upload", name="submit")
             span#status
 
         section
@@ -15,33 +15,52 @@ block page_content
                 fieldset
                     // Form Name
                     h3 New Page
-                    // Text input
+
+                    // TITLE
                     .form-group
                         label.col-md-4.control-label(for='title', placeholder="Title") Title
                         .col-md-5
                             input#title.form-control.input-md(name='title', type='text', placeholder='Title', required='Needs a title!')
                             span.help-block Give it a snazzy title
-                    // Text input
+
+                    // URL
                     .form-group
                         label.col-md-4.control-label(for='textinput', placeholder="Url") Url
                         .col-md-5
                             input#url.form-control.input-md(name='url', type='text', placeholder='This will auto-fill from title', required='Did you delete the url?', disabled='true')
-                    // Textarea
+
+                    // SUMMARY
                     .form-group
                         label.col-md-4.control-label(for='summary', required="Summary pls.") Summary
                         .col-md-4
                             textarea#summary.form-control(name='summary', placeholder="Short but sweet.")
+
+                    // GALLERY
                     .form-group
                         label.col-med-4.control-label(for='images', placeholder='Images') Gallery
                         .col-md-4
                             input#images.form-control.input-md(name='images', type='text', required='Did you delete the url?', disabled='true')
                             #gallery(style="display:none;")
-                    // Textarea
+
+                    // HEADER IMAGE
+                    .form-group
+                        label.col-md-4.control-label(for='header-image', required="Select a header image.") Header image
+                        .col-md-4
+                            #select-header-wrapper.col-md-4
+
+                    // BODY
                     .form-group
                         label.col-md-4.control-label(for='body') Body
                         .col-md-4
                             textarea#body.form-control(name='body', placeholder="Say some good stuff.", required="Say something nice.")
-                    // Multiple Radios
+
+                    // PAGE TYPE
+                    .form-group
+                        label.col-md-4.control-label(for='featured') Feature Page
+                        .col-md-4
+                            input#featured(type='checkbox', name='featured')
+
+                    // PAGE TYPE
                     .form-group
                         label.col-md-4.control-label(for='pageType') Page Type
                         .col-md-4
@@ -51,15 +70,15 @@ block page_content
                                     |       Blog
                             .radio
                                 label(for='pageType-1')
-                                    input#pageType-1(type='radio', name='pageType', value='tattoo')
+                                    input#pageType-1(type='radio', name='pageType', value='tattoos')
                                     |       Tattoo
-                    // Button (Double)
+
+                    // SUBMT
                     .form-group
                         label.col-md-4.control-label(for='save')
                         .col-md-8
                             button#save.button(name='save') Save
                             button#cancel.button.alt(name='cancel') Cancel
-
 
 block append scripts
     script(src="/trumbo/trumbowyg.min.js")
@@ -67,6 +86,25 @@ block append scripts
     script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
     script.
         $(document).ready(function() {
+
+            $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
+                _renderItem: function( ul, item ) {
+                var li = $( "<li>" ),
+                    wrapper = $( "<div>", { text: item.label } );
+
+                if ( item.disabled ) {
+                    li.addClass( "ui-state-disabled" );
+                }
+
+                $( "<span>", {
+                    style: item.element.attr( "data-style" ),
+                    "class": "ui-icon " + item.element.attr( "data-class" )
+                })
+                    .appendTo( wrapper );
+
+                return li.append( wrapper ).appendTo( ul );
+                }
+            });
 
             function makeUrl(str) {
                 str = str.trim();
@@ -89,25 +127,46 @@ block append scripts
                 }
                 return str;
             }
+
             function initGallery(images = []) {
+                // reset gallery
                 const gallery = $('#gallery');
-                gallery.css('display','none');
-                gallery.empty();
-                images.forEach(img => gallery.append(`<img src='${img}' data-image='${img}' alt='' />`));
+                gallery.css('display','none')
+                       .empty();
+
+                // reset header wrapper
+                $('#select-header-wrapper')
+                    .empty()
+                    .append('<select class="form-control" id="header-image" name="header-image" placeholder="Select a header image"></select>');
+                const headerimage = $('#header-image');
+                
+                // iterate through images and 
+                // add to gallery and wrapper
+                images.forEach(img => {
+                    gallery.append(`<img src='${img}' data-image='${img}' alt='' />`);
+                    headerimage.append(`<option value="${img}" data-class="header-image" data-style="background-image: url(${img});background-size: 40px 40px;">${img}</option>`);
+                });
+
+                // init unitegallery
                 gallery.unitegallery({
                     gallery_theme: "tiles",
                     lightbox_type: "compact"
                 });
+
+                // init iconmenu (header-image)
+                headerimage
+                    .iconselectmenu()
+                    .iconselectmenu( "menuWidget")
+                    .addClass( "ui-menu-icons header-image" );
             };
 
             $('#body').trumbowyg();
-            $('#title').keyup(() => {
-                $('#url').val(makeUrl($('#title').val()));
-            });
+            $('#title').keyup(() => $('#url').val(makeUrl($('#title').val())));
+
             $('#uploadForm').submit(function() {
-                $("#status").empty().text("File is uploading...");
+                $("#status").empty().text("Uploading...");
                 $(this).ajaxSubmit({
-                    error: (xhr) => { status('Error: ' + xhr.status); },
+                    error: (error) => console.log(`Error: ${error.toString()}`),
                     success: (response) => {
                         const images = $('#images');
                         let gallery = images.val().length > 0 ? images.val().split(',') : [];
@@ -116,26 +175,30 @@ block append scripts
                                 gallery.push(a);
                             }
                         });
+                        $("#status").empty().text("Complete.");
                         images.val(gallery);
                         initGallery(gallery);
                     }
                 });
                 return false;
             });
+
             $('#save').click(function() {
                 const data = {
+                    featured: $('#featured').val(),
                     title: $('#title').val(),
                     url: $('#url').val(),
-                    summary: $('#summary').val(),
-                    images: $('#images').val(),
                     body: $('#body').val(),
-                    pagetype: $('input[name=pageType]:checked').val(),
+                    summary: $('#summary').val(),
+                    header: $('#header-image').val(),
+                    gallery: $('#images').val(),
+                    pagetype: $('[name=pageType]:checked').val(),
                 };
                 $.ajax({
                     data: data,
                     url: '/create',
                     type: 'POST',
-                    error: (xhr) => { status('Error: ' + xhr.status); },
+                    error: (error) => console.log(`Error: ${error.toString()}`),
                     success: (response) => {
                         console.log('Got a response');
                     }

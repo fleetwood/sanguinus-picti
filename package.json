@@ -14,6 +14,7 @@
     "formidable": "^1.2.1",
     "fs-extra": "^5.0.0",
     "http-errors": "~1.6.2",
+    "jsonschema": "^1.2.4",
     "knex": "^0.14.6",
     "lx-valid": "^1.2.4",
     "moment": "^2.22.1",
