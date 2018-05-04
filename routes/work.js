@@ -4,7 +4,7 @@ const router = require('../helpers/Router');
 const page = new Page('Work', 'work');
 
 /* GET home page. */
-router.get('/work', (res) => {
+router.get('/work', (req, res) => {
   page.getMenus()
     .then(menus => {
       const data = page.viewData(menus, {});

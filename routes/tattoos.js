@@ -2,7 +2,7 @@ const page = require('../models/Tattoo');
 const router = require('../helpers/Router');
 
 /* GET tattoo list */
-router.get('/tattoos', (res) => {
+router.get('/tattoos', (req, res) => {
   page.getMenus()
     .then(menus =>  {
       page.all({
@@ -21,11 +21,11 @@ router.get('/tattoos', (res) => {
 });
 
 /* GET single tattoo */
-router.get('/tattoos/:url', (res) => {
+router.get('/tattoos/:url', (req, res) => {
   const byTattooUrl = {
     name: page.tables.views.page_author,
     where: {
-      url: res.req.params.url
+      url: req.params.url
     }
   };
 
@@ -40,6 +40,5 @@ router.get('/tattoos/:url', (res) => {
       router.renderError(res, err);
     });
 });
-
 
 module.exports = router;

@@ -1,0 +1,18 @@
+mixin user
+
+  form.(id='userLogin', method='post')
+    a(href='javascript:void(0)') Sign Up
+    
+    button.auth0-lock-social-button.auth0-lock-social-big-button(data-provider='facebook', type='button')
+      .auth0-lock-social-button-icon
+      .auth0-lock-social-button-text Log in with Facebook
+    button.auth0-lock-social-button.auth0-lock-social-big-button(data-provider='google-oauth2', type='button')
+      .auth0-lock-social-button-icon
+      .auth0-lock-social-button-text Log in with Google
+
+    input.auth0-lock-input(type='email', name='email', placeholder='yours@example.com', autocomplete='off', autocapitalize='off', value='wizening@gmail.com')
+    input.auth0-lock-input(type='password', name='password', placeholder='your password', autocomplete='off', autocapitalize='off', value='R0ck1ngR0ll')
+    a.auth0-lock-alternative-link(href='javascript:void(0)') Don't remember your password?
+    button.auth0-lock-submit(type='submit', style='background-color: rgb(234, 83, 35);')
+      | Log In
+      

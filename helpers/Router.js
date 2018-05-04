@@ -42,13 +42,13 @@ class Router {
 
     get(url, callback) {
         this.router.get(url, function (req, res, next) {
-            callback(res);
+            callback(req, res, next);
         });
     }
     
     post(url, callback) {
         this.router.post(url, function (req, res, next) {
-            callback(res);
+            callback(req, res, next);
         });
     }
 

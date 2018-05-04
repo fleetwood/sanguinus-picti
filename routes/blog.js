@@ -2,7 +2,7 @@ const page = require('../models/Blog');
 const router = require('../helpers/Router');
 
 /* GET home page. */
-router.get('/blog', (res) => {
+router.get('/blog', (req, res) => {
   // todo: broke
   page.getMenus()
     .then(menus => {
@@ -22,11 +22,11 @@ router.get('/blog', (res) => {
 });
 
 /* GET home page. */
-router.get('/blog/:url', (res) => {
+router.get('/blog/:url', (req, res) => {
   const byBlogUrl = {
     name: page.tables.views.page_author,
     where: {
-      url: res.req.params.url
+      url: req.params.url
     }
   };
 
