@@ -80,6 +80,7 @@ router.post('/create', function(res) {
   page.insert(pageData)
     .then(results => {
       res.status(200).send({success: results, page: page});
+      // redirect?
     })
     .catch(err => {
       res.status(500).send(JSON.stringify(err, null, 2));
