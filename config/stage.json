@@ -17,5 +17,10 @@
         },
         "uri": "postgres://tjryzxdkhapnho:5ee973b22b3140251ab1f8f582c5df754599262b14328c5fc64131b2535cba2b@ec2-54-243-213-188.compute-1.amazonaws.com:5432/db5eflh0ccipjd",
         "heroku-cli": "heroku pg:psql postgresql-encircled-95685 --app sanguinus-picti"
+    },
+    "authZero" :{
+        "client": "7nqt5FOGA56z95wKbBxCs4uJ3Jk3683i",
+        "domain": "sanguinus-picti.auth0.com",
+        "secret": "IYZgh6dUUj5IlvxxslcFDKc2qMh-RV1p84xmRVm6UxEW6ZLF01VzNIXuoUPhkebG"
     }
 }

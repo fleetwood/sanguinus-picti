@@ -82,6 +82,23 @@ class Page extends KnexModel {
             data: data
         }
     };
+
+    pageData(menus, pageData) {
+        return {
+            menus: menus,
+            id: pageData.id,
+            url: pageData.url,
+            title: pageData.title,
+            summary: pageData.summary,
+            body: pageData.body,
+            featured: pageData.featured,
+            header: pageData.images.header,
+            gallery: pageData.images.gallery,
+            pageType: pageData.pageType,
+            isBlog: pageData.pageType === Page.pageTypes.blog,
+            isTattoo: pageData.pageType === Page.pageTypes.tattoos
+        };
+    };
 }
 
 module.exports = Page;

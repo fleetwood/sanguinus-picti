@@ -9,16 +9,12 @@ mixin sidebar
                 ul.divided
                     for tattoo in menus.featuredTats
                         li
-                            a(href=`./tattoos/${tattoo.url}`)
-                            p= tattoo.title
-                            img(class='12u', src=tattoo.images.header)
-
-        footer
-            a.button.alt(href='#') Contact Us
+                            a(href=`/tattoos/${tattoo.url}`)
+                                img(class='12u', src=tattoo.images.header)
 
     section.box
         header
-            h3 Blogs
+            h3 Blog
 
             unless !menus.featuredBlogs 
                 ul.divided
@@ -28,4 +24,7 @@ mixin sidebar
                                 = blog.title
 
         footer
-            a.button.alt(href='./blogs') See All
+            p
+                a.button.alt(href='./blogs') See All
+            p
+                a.button.alt(href='#') Contact Us

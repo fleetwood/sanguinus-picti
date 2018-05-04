@@ -6,15 +6,18 @@ block page_content
     header
       h2= data.title
 
-    section
-      | Posted by: #{data.name} on #{recentDate(data.postDate)}
+    .row
+      .div(class='6u 12u(mobile)') Posted by: #{data.name} on #{recentDate(data.postDate)}
+      .div(class='6u 12u(mobile) sharethis-inline-share-buttons')
     
-    section= data.body
+    section!= data.body
     
     #gallery(style="display:none;")
       for image in data.images.gallery
         img(src=image, data-image=image, alt='')
-    
+
+    .sharethis-inline-share-buttons
+
     block append scripts
       script(src='/unitegallery/themes/tiles/ug-theme-tiles.js')
       script.
