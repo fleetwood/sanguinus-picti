@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    title= title
+  body
+    nav.w3-bar.w3-border.w3-light-grey( role="navigation" )
+      .w3-bar-item.w3-text-grey Auth0 - NodeJS
+      a( href="/").w3-bar-item.w3-button Home
+      if loggedIn
+        a( href="/user" ).w3-bar-item.w3-button Profile
+        a( href="/auth/logout").w3-bar-item.w3-button Logout
+      else
+        a( href="/auth/login" ).w3-bar-item.w3-button Login
+    block content

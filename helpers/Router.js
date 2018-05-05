@@ -1,5 +1,6 @@
 const config = require('../config/config');
 const knex = require('../database/knex');
+const ensureLogin = require('connect-ensure-login').ensureLoggedIn();
 const express = require('express');
 const router = express.Router();
 
@@ -38,6 +39,12 @@ class Router {
 
     get router() {
         return this._router;
+    }
+
+    restricted(url, callback) {
+        this.router.get(url, ensureLogin, (req, res, next) => {
+            callback(req, res, next);
+        });
     }
 
     get(url, callback) {
