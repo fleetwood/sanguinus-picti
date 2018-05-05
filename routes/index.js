@@ -96,13 +96,17 @@ router.post('/create', function(req, res) {
     postDate: moment(new Date()).format('YYYY/MM/DD hh:mm:ss'),
     images: {
       header: data.header,
-      gallery: data.gallery
+      gallery: data.gallery.split(',')
     }
   };
 
   page.insert(pageData)
     .then(results => {
-      res.status(200).send({success: results, page: page});
+      res.status(200).send({
+        success: true,
+        results: results[0],
+        url: `/${results[0].pageType}/${results[0].url}`
+      });
       // redirect?
     })
     .catch(err => {

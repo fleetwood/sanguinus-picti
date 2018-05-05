@@ -205,8 +205,6 @@ class KnexModel {
    * @returns Promise(resolve, reject)
    */
   insert(data) {
-    // todo: fix images json
-    // {"header": "/images/trm_jr_2.jpg", "gallery": ["/images/trm_bike.jpg","/images/trm_hand.jpg"]}
     return new Promise((resolve, reject) => {
       const validation = this.validate(data);
       if (validation.valid) {
@@ -214,8 +212,9 @@ class KnexModel {
           .debug(this.debug)
           .insert(data)
           .into(this.tableName)
+          .returning('*')
           .then(result => {
-            resolve(result.rows > 0);
+            resolve(result);
           })
           .catch(err => {
             reject(err);

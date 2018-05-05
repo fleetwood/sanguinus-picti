@@ -201,6 +201,9 @@ block append scripts
                     error: (error) => console.log(`Error: ${error.toString()}`),
                     success: (response) => {
                         console.log('Got a response');
+                        if (response.success) {
+                            window.location.href = response.url;
+                        }
                     }
                 });
                 return false;
