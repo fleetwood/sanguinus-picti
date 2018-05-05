@@ -11,4 +11,4 @@ block page_content
       for image in data.images.gallery
         div(style=`background: url(${image}); height: 200px; width: 200px` class="4u 12u(mobile)")
     .row
-      | Posted by: #{data.name} on #{recentDate(data.postDate)}
+      | Posted by: #{data.name} #{recentDate(data.postDate)}

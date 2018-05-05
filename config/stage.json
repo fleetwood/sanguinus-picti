@@ -1,4 +1,9 @@
 {
+    "server" : {
+        "domain": "sanguinus-picti.heroku.com",
+        "port": 80,
+        "public": "public"
+    },
     "knex" : {
         "client": "pg",
         "connection": {
@@ -19,8 +24,9 @@
         "heroku-cli": "heroku pg:psql postgresql-encircled-95685 --app sanguinus-picti"
     },
     "authZero" :{
-        "client": "7nqt5FOGA56z95wKbBxCs4uJ3Jk3683i",
+        "clientID": "7nqt5FOGA56z95wKbBxCs4uJ3Jk3683i",
         "domain": "sanguinus-picti.auth0.com",
-        "secret": "IYZgh6dUUj5IlvxxslcFDKc2qMh-RV1p84xmRVm6UxEW6ZLF01VzNIXuoUPhkebG"
+        "clientSecret": "IYZgh6dUUj5IlvxxslcFDKc2qMh-RV1p84xmRVm6UxEW6ZLF01VzNIXuoUPhkebG",
+        "callbackURL": "/auth/callback"
     }
 }

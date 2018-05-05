@@ -5,26 +5,26 @@ block page_content
     img(src=data.images.header, class="12u")
     header
       h2= data.title
-
+    
     .row
-      .div(class='6u 12u(mobile)') Posted by: #{data.name} on #{recentDate(data.postDate)}
+      .div(class='6u 12u(mobile)') Posted by: #{data.name} #{recentDate(data.postDate)}
       .div(class='6u 12u(mobile) sharethis-inline-share-buttons')
     
+    hr
     section!= data.body
     
     #gallery(style="display:none;")
       for image in data.images.gallery
         img(src=image, data-image=image, alt='')
 
+    hr
     .sharethis-inline-share-buttons
 
     block append scripts
       script(src='/unitegallery/themes/tiles/ug-theme-tiles.js')
       script.
-          jQuery(document).ready(function(){
-            // this is appended scripts block
-            jQuery('#gallery').unitegallery({
-              gallery_theme: "tiles",
-              lightbox_type: "compact"
-            });
+          $('#gallery').unitegallery({
+            gallery_theme: "tiles",
+            lightbox_type: "compact",
+            tile_enable_icons: false
           });
