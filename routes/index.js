@@ -152,9 +152,9 @@ router.get(
     clientID: config.auth.clientID,
     domain: config.auth.domain,
     redirectUri: config.auth.callbackURL,
-    audience: `https://${config.auth.domain}/userinfo`,
     responseType: 'code',
-    scope: 'openid'
+    audience: `https://${config.auth.domain}/userinfo`,
+    scope: 'openid profile'
   }),
   function(req, res) {
     res.redirect('/');
@@ -177,4 +177,4 @@ router.get('/callback',
   }
 );
 
-module.exports = router;
+module.exports = router.router;

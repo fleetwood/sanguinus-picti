@@ -1,0 +1,13 @@
+extends ./layouts/left
+
+block page_content
+  .article.box.post
+    section
+      if loggedIn
+        h3 Welcome #{user.nickname}
+        img(src=user.picture)
+        hr
+        a(href='/auth/logout') Log out
+      else
+        h3 
+          a(href='/auth/login') Log In
