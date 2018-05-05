@@ -4,7 +4,7 @@
   "description": "Sanguinus Picti tattoo site",
   "repository": "https://github.com/fleetwood/sanguinus-picti",
   "author": "John Fleetwood",
-  "license": "Reserver",
+  "license": "Reserved",
   "scripts": {
     "start": "gulp && node ./bin/www"
   },

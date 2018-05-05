@@ -5,7 +5,7 @@
  */
 var config = require('../config/config');
 var app = require('../app');
-var debug = require('debug')('nodejs-regular-webapp2:server');
+var debug = require('debug')('sanguinus-picti:server');
 var http = require('http');
 
 /**
