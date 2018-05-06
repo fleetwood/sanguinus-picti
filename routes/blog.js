@@ -13,7 +13,7 @@ router.get('/blog', (req, res) => {
           orderDir: page.tables.sort.desc
         })
         .then(results =>{
-          res.render('blog/list', page.viewData(menus, results));
+          res.render('blog/list', page.viewData(router.user, menus, results));
         });     
   })
   .catch(err => {
@@ -34,7 +34,7 @@ router.get('/blog/:url', (req, res) => {
     .then(menus => {
       page.one(byBlogUrl)
         .then(results => {
-            res.render('blog/index', page.viewData(menus, results));
+            res.render('blog/index', page.viewData(router.user, menus, results));
         });
     })
     .catch(err => {

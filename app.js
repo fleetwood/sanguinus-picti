@@ -9,6 +9,7 @@ const session = require('express-session');
 const passport = require('passport');
 
 const index = require('./routes/index');
+const admin = require('./routes/admin');
 const auth = require('./routes/auth');
 const user = require('./routes/user');
 const about = require('./routes/about');
@@ -55,6 +56,7 @@ app.use(function(req, res, next) {
 
 app.use('/', index);
 app.use('/auth', auth);
+app.use('/admin', admin.router);
 app.use('/user', user.router);
 app.use('/about', about.router);
 app.use('/blog', blog.router);

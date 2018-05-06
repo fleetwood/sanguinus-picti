@@ -74,13 +74,14 @@ class Page extends KnexModel {
         return KnexModel.tables;
     }
 
-    viewData(menus, data) {
+    viewData(user, menus, data) {
         return {
             title: this.title,
             current: this.pageType,
-            menus: menus,
-            data: data
-        }
+            user,
+            menus,
+            data
+        };
     };
 
     pageData(menus, pageData) {

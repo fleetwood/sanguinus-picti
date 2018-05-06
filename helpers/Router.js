@@ -10,6 +10,7 @@ class Router {
         this._knex = knex;
         this._express = express;
         this._router = router;
+        this._user = null;
     }
 
     /**
@@ -41,20 +42,34 @@ class Router {
         return this._router;
     }
 
+    get user() {
+        return this._user;
+    }
+
+    setUser(req, res) {
+        //todo: tie the auth0 user to SP. Somehow.
+        if (res.locals.loggedIn && this._user === null) {
+            this._user = req.session.passport.user;
+        }
+    }
+
     restricted(url, callback) {
         this.router.get(url, ensureLogin, (req, res, next) => {
+            this.setUser(req, res);
             callback(req, res, next);
         });
     }
 
     get(url, callback) {
-        this.router.get(url, function (req, res, next) {
+        this.router.get(url, (req, res, next) => {
+            this.setUser(req, res);
             callback(req, res, next);
         });
     }
     
     post(url, callback) {
-        this.router.post(url, function (req, res, next) {
+        this.router.post(url, ensureLogin, (req, res, next) => {
+            this.setUser(req, res);
             callback(req, res, next);
         });
     }

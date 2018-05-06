@@ -12,7 +12,7 @@ router.get('/tattoos', (req, res) => {
         orderDir: page.tables.sort.desc
       })
       .then(results => {
-        res.render('tattoos/list', page.viewData(menus, results));
+        res.render('tattoos/list', page.viewData(router.user, menus, results));
       })
     })
     .catch(err => {
@@ -33,7 +33,7 @@ router.get('/tattoos/:url', (req, res) => {
     .then(menus => {
       page.one(byTattooUrl)  
         .then(results => {
-          res.render('tattoos/index', page.viewData(menus, results));
+          res.render('tattoos/index', page.viewData(router.user, menus, results));
         });
     })
     .catch(err => {

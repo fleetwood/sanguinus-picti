@@ -102,4 +102,9 @@ mixin footer
                                 a(href='http://html5up.net/') HTML5 UP
                             
                             li © 2018, All rights reserved.
+                            li
+                                if loggedIn
+                                    a(href='/auth/logout') Logout
+                                else
+                                    a(href='/auth/login') Login
                     

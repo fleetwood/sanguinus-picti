@@ -6,15 +6,6 @@ mixin navbar(active)
             li(class=`${active == 'home' ? 'current' : ''}`)
                 a(href='/') Home
 
-            if loggedIn
-                li(class=`${active == 'create' ? 'current' : ''}`)
-                    a(href='/new-page') New Page
-                li
-                    a(href='/auth/logout') Logout
-            else
-                li
-                    a(href='/auth/login') Login
-
             li(class=`${active == 'about' ? 'current' : ''}`)
                 a(href='/about') About Us
 
@@ -34,3 +25,12 @@ mixin navbar(active)
                                 for blog in menus.featuredBlogs
                                     li
                                         a(href=`/blog/${blog.url}`)= blog.title
+            
+            if loggedIn
+                li(class=`${active == 'create' ? 'current' : ''}`)
+                    a(href='/user') Admin
+                        ul
+                            li
+                                a(href='/admin/create') New Page
+                            li
+                                a(href='/auth/logout') Logout

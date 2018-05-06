@@ -7,7 +7,7 @@ const page = new Page('About', 'about');
 router.get('/about', (req, res) => {
   page.getMenus()
     .then(menus => {
-      res.render('about', page.viewData(menus, {}));
+      res.render('about', page.viewData(router.user, menus, {}));
     })
     .catch(err => {
       router.renderError(res, err);

@@ -1,11 +1,11 @@
-extends ./layouts/full
+extends ../layouts/full
 
 block page_content
     article.box.post
-    
+        
         section
             h3 Upload images for gallery
-                form#uploadForm( enctype="multipart/form-data", action="/upload", method="post")
+                form#uploadForm( enctype="multipart/form-data", action="/admin/upload", method="post")
                     input(type="file", name="userPhoto", multiple)
                     input(type="submit", value="Upload", name="submit")
             span#status
@@ -20,26 +20,26 @@ block page_content
                     .form-group
                         label.col-md-4.control-label(for='title', placeholder="Title") Title
                         .col-md-5
-                            input#title.form-control.input-md(name='title', type='text', required='Needs a title!', value=title)
+                            input#title.form-control.input-md(name='title', type='text', placeholder='Title', required='Needs a title!')
                             span.help-block Give it a snazzy title
 
                     // URL
                     .form-group
                         label.col-md-4.control-label(for='textinput', placeholder="Url") Url
                         .col-md-5
-                            input#url.form-control.input-md(name='url', type='text', required='Did you delete the url?', disabled='true', value=url)
+                            input#url.form-control.input-md(name='url', type='text', placeholder='This will auto-fill from title', required='Did you delete the url?', disabled='true')
 
                     // SUMMARY
                     .form-group
                         label.col-md-4.control-label(for='summary', required="Summary pls.") Summary
                         .col-md-4
-                            textarea#summary.form-control(name='summary', value=summary)
+                            textarea#summary.form-control(name='summary', placeholder="Short but sweet.")
 
                     // GALLERY
                     .form-group
                         label.col-med-4.control-label(for='images', placeholder='Images') Gallery
                         .col-md-4
-                            input#images.form-control.input-md(name='images', type='text', required='Did you delete the url?', disabled='true', value=JSON.parse(gallery))
+                            input#images.form-control.input-md(name='images', type='text', required='Did you delete the url?', disabled='true')
                             #gallery(style="display:none;")
 
                     // HEADER IMAGE
@@ -52,13 +52,13 @@ block page_content
                     .form-group
                         label.col-md-4.control-label(for='body') Body
                         .col-md-4
-                            textarea#body.form-control(name='body', required="Say something nice.", value=body)
+                            textarea#body.form-control(name='body', placeholder="Say some good stuff.", required="Say something nice.")
 
                     // PAGE TYPE
                     .form-group
                         label.col-md-4.control-label(for='featured') Feature Page
                         .col-md-4
-                            input#featured(type='checkbox', name='featured', checked=featured)
+                            input#featured(type='checkbox', name='featured')
 
                     // PAGE TYPE
                     .form-group
@@ -66,13 +66,12 @@ block page_content
                         .col-md-4
                             .radio
                                 label(for='pageType-0')
-                                    input#pageType-0(type='radio', name='pageType', value='blog', checked=isBlog)
-                                    | Blog
-                                    
+                                    input#pageType-0(type='radio', name='pageType', value='blog', checked='checked')
+                                    |       Blog
                             .radio
                                 label(for='pageType-1')
-                                    input#pageType-1(type='radio', name='pageType', value='tattoos', checked=isTattoo)
-                                    | Tattoo
+                                    input#pageType-1(type='radio', name='pageType', value='tattoos')
+                                    |       Tattoo
 
                     // SUBMT
                     .form-group
@@ -108,7 +107,7 @@ block append scripts
             });
 
             function makeUrl(str) {
-                str = str.trim();
+                str = str.trim().toLowerCase();
                 const spaces = /\s+/g;
                 const nonalpha = /[^[A-Za-z0-9\-]+/g;
                 const doubles = /[\-{2,}]+/g;
@@ -197,15 +196,16 @@ block append scripts
                 };
                 $.ajax({
                     data: data,
-                    url: '/update',
+                    url: '/admin/create',
                     type: 'POST',
                     error: (error) => console.log(`Error: ${error.toString()}`),
                     success: (response) => {
                         console.log('Got a response');
+                        if (response.success) {
+                            window.location.href = response.url;
+                        }
                     }
                 });
                 return false;
             });
-
-            initGallery(JSON.parse($('#images').val()) || []);
         });
