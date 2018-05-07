@@ -16,7 +16,8 @@ mixin navbar(active)
                             ul
                                 for tattoo in menus.featuredTats
                                     li
-                                        a(href=`/tattoos/${tattoo.url}`)= tattoo.title
+                                        //- a(href=`/tattoos/${tattoo.url}`)= tattoo.title
+                                        a(href=`/admin/edit-page/${tattoo.id}`)= tattoo.title
 
                 unless !menus.featuredBlogs
                     li(class=`${active == 'blog' ? 'current' : ''}`)

@@ -67,11 +67,11 @@ block page_content
                             .radio
                                 label(for='pageType-0')
                                     input#pageType-0(type='radio', name='pageType', value='blog', checked='checked')
-                                    |       Blog
+                                    | Blog
                             .radio
                                 label(for='pageType-1')
                                     input#pageType-1(type='radio', name='pageType', value='tattoos')
-                                    |       Tattoo
+                                    | Tattoo
 
                     // SUBMT
                     .form-group
@@ -126,6 +126,10 @@ block append scripts
                     }
                 }
                 return str;
+            }
+
+            function parseImages() {
+                return JSON.parse($('#images').val());
             }
 
             function initGallery(images = []) {
@@ -191,7 +195,7 @@ block append scripts
                     body: $('#body').val(),
                     summary: $('#summary').val(),
                     header: $('#header-image').val(),
-                    gallery: $('#images').val(),
+                    gallery: parseImages(),
                     pagetype: $('[name=pageType]:checked').val(),
                 };
                 $.ajax({

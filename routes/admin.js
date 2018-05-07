@@ -19,10 +19,45 @@ var storage = multer.diskStorage({
     callback(null, file.originalname);
   }
 });
+var upload = multer({ storage: storage }).array('files');
 
-var upload = multer({ storage: storage }).array('userPhoto');
+const parseData = (data) => {
+  return {
+    author_id: 1,
+    featured: data.featured === "on",
+    title: data.title,
+    summary: data.summary,
+    body: data.body,
+    pageType: data.pagetype,
+    url: data.url,
+    postDate: moment(new Date()).format('YYYY/MM/DD hh:mm:ss'),
+    images: {
+      header: data.header,
+      gallery: data.gallery
+    }
+  };
+}
 
-/* GET create page */
+router.restricted('/edit-page/:id', (req, res) => {
+  const user = res.locals.user;
+  page.getMenus()
+    .then(menus => {
+      page.one({name: 'pages', where: {id: req.params.id}})
+        .then(result => {
+          if (result) {
+            return res.render('admin/edit-page', page.viewData(router.user, menus, result));
+          }
+          router.renderError(res, new Error(`Could not resolve for id ${req.params.id}`));
+        })
+        .catch(err => {
+          router.renderError(res, err);
+        });
+    })
+    .catch(err => {
+      router.renderError(res, err);
+    });
+});
+
 router.restricted('/create', (req, res) => {
     page.getMenus()
       .then(menus => {
@@ -37,21 +72,7 @@ router.post('/create', (req, res) => {
     const data = req.body;
     const page = data.pagetype == Page.pageTypes.tattoo ? Tattoo : Blog;
 
-    const pageData = {
-      author_id: 1,
-      featured: data.featured === "on",
-      title: data.title,
-      summary: data.summary,
-      body: data.body,
-      pageType: data.pagetype,
-      url: data.url,
-      postDate: moment(new Date()).format('YYYY/MM/DD hh:mm:ss'),
-      images: {
-        header: data.header,
-        gallery: data.gallery.split(',')
-      }
-    };
-
+    const pageData = parseData(data);
     page.insert(pageData)
       .then(results => {
         res.status(200).send({
@@ -66,37 +87,17 @@ router.post('/create', (req, res) => {
       });
   });
 
-/* GET edit page */
-router.restricted('/edit-page/:id', (req, res) => {
-  const user = res.locals.user;
-  page.getMenus()
-    .then(menus => {
-      page.one({name: 'pages', where: {id: req.params.id}})
-        .then(result => {
-          if (!result) {
-            return res.render('admin/edit-page', page.viewData(router.user, menus, {}));
-          }
-          res.redirect('/admin/create');
-        })
-        .catch(err => {
-          router.renderError(res, err);
-        });
-    })
-    .catch(err => {
-      router.renderError(res, err);
-    });
-});
 
 /* POST upload images */
 router.post('/upload', (req, res) => {
   upload(req, res, function (err) {
     if (err) {
-      return res.status(500).send(`Error uploading file. ${err.message}`);
+      return res.status(500).json(`Error uploading file. ${err.message}`);
     }
     const results = req.files.map(file => {
       return `/images/${file.filename}`;
     });
-    res.status(200).send(results);
+    res.status(200).json(results);
   });
 });
 
@@ -105,25 +106,10 @@ router.post('/update', (req, res) => {
   const data = req.body;
   const page = data.pagetype == Page.pageTypes.tattoo ? Tattoo : Blog;
 
-  const pageData = {
-    // todo: grab the logged in user
-    author_id: 1,
-    featured: data.featured === "on",
-    title: data.title,
-    summary: data.summary,
-    body: data.body,
-    pageType: data.pagetype,
-    url: data.url,
-    postDate: moment(new Date()).format('YYYY/MM/DD hh:mm:ss'),
-    images: {
-      header: data.header,
-      gallery: data.gallery
-    }
-  };
-
-  page.update(req.params.id, pageData)
+  const pageData = parseData(data);
+  page.update(parseInt(data.id), parseData(pageData))
     .then(results => {
-      res.status(200).send({success: results, page: page});
+      res.status(200).send({success: true, data: results});
     })
     .catch(err => {
       res.status(500).send(JSON.stringify(err, null, 2));

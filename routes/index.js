@@ -14,4 +14,8 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/login', (req, res)=> {
+  res.redirect('/auth/login');
+})
+
 module.exports = router.router;

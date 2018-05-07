@@ -1,0 +1,72 @@
+mixin gallery-edit
+
+  Upload images for gallery
+      #uploadForm
+          input#imageUpload(type="file", name="imageUpload", multiple)
+          a#uploadLink.button(href='#') Upload
+  span#status
+  input#images.form-control.input-md(name='images', type='text', required='Did you delete the url?', disabled='true')
+  #gallery
+
+  block append scripts
+    script(src='/unitegallery/themes/tiles/ug-theme-tiles.js')
+    script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+    script.
+      $(document).ready(function() {
+        const status = $('#status');
+        const gallery = $('#gallery');
+        const images = $('#images');
+
+        function setStatus(str = "") {
+          status.empty().append(str);
+        }
+
+        function parseImages(asEntity=false) {
+            const imgs = images.val().length > 0 ? JSON.parse(images.val()) : [];
+            //todo: parse with header for entity
+            return asEntity ? imgs : imgs;
+        }
+
+        function addImages(val) {
+          const imgs = parseImages();
+          function add(i) {
+            if (imgs.indexOf(i)<0) {
+              imgs.push(i);
+            }
+          }
+          if(Array.isArray(val)) {
+            val.forEach(img => add(img));
+          } 
+          else {
+            add(val);
+          }
+          images.empty().val(imgs);
+        }
+
+        function initGallery() {
+            // reset gallery
+            gallery.empty();
+            parseImages().forEach(img => gallery.append(`<img src='${img}' data-image='${img}' alt='${img}' />`));
+        }
+
+        $('#uploadLink').click(function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          const data = new FormData();
+          data.append('files', $('#imageUpload').files);
+          setStatus("Uploading...");
+          $.ajax({
+            url: '/admin/upload',
+            type: 'POST',
+            data: data,
+            contentType: false,
+            processData: false,
+            error: (error) => console.log(`Error: ${error.toString()}`),
+            success: (response) => {
+              addImages(response);
+              initGallery();
+              setStatus("Complete.");
+            }
+          });
+        });
+      });

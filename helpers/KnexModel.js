@@ -1,4 +1,4 @@
-const config = require('config');
+const config = require('../config/config');
 const knex = require('knex')(config.knex);
 const Validator = require('jsonschema').Validator;
 const validator = new Validator();
@@ -12,7 +12,7 @@ class KnexModel {
     this.tableName = definition.tableName;
     this.key = definition.key;
     this.schema = definition.fields;
-    this._debug = false;
+    this._debug = config.knex.debug;
   }
 
   static get tables() {
@@ -243,12 +243,13 @@ class KnexModel {
             knex.select('*')
               .from(this.tableName)
               .where({ id: entityId })
-              .then(updated => resolve(updated[0]))
-              .catch(err => reject(err))
-              ;
+              .then(updated => {
+                resolve(updated[0]);
           })
-          .catch(err => reject(err))
-          ;
+        })
+        .catch(err => {
+          reject(err);
+        });
       } else {
         reject(new Error('Validation errors: ' + validation.errors.toString()));
       }

@@ -1,9 +1,7 @@
 const page = require('../models/Blog');
 const router = require('../helpers/Router');
 
-/* GET home page. */
 router.get('/blog', (req, res) => {
-  // todo: broke
   page.getMenus()
     .then(menus => {
       page.all({
@@ -21,7 +19,6 @@ router.get('/blog', (req, res) => {
   });
 });
 
-/* GET home page. */
 router.get('/blog/:url', (req, res) => {
   const byBlogUrl = {
     name: page.tables.views.page_author,

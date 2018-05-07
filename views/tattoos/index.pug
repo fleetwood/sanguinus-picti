@@ -4,12 +4,16 @@ block page_content
   article.box.post
     img(src=data.images.header, class="12u")
     header
-      h2= data.title
+      if loggedIn
+        h2
+          a(href=`/admin/edit-page/${data.id}`)= data.title
+      else
+        h2= data.title
     
     .row
       .div(class='6u 12u(mobile)') Posted by: #{data.name} #{recentDate(data.postDate)}
       .div(class='6u 12u(mobile) sharethis-inline-share-buttons')
-    
+      
     hr
     section!= data.body
     

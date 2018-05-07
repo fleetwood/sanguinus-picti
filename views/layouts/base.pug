@@ -57,7 +57,8 @@ html
           // Nav
           +navbar(current, menus)
 
-          block header
+          unless hideHeader
+            block header
           
       // Main
       #main-wrapper
@@ -65,7 +66,8 @@ html
           block content
 
       // Footer
-      +footer
+      unless hideFooter
+        +footer
   
     // Scripts
     +scripts
