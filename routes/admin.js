@@ -19,7 +19,7 @@ var storage = multer.diskStorage({
     callback(null, file.originalname);
   }
 });
-var upload = multer({ storage: storage }).array('files');
+var upload = multer({ storage: storage }).array('file');
 
 const parseData = (data) => {
   return {

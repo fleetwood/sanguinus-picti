@@ -2,8 +2,7 @@ mixin gallery-edit
 
   Upload images for gallery
       #uploadForm
-          input#imageUpload(type="file", name="imageUpload", multiple)
-          a#uploadLink.button(href='#') Upload
+          #fileuploader= Upload
   span#status
   input#images.form-control.input-md(name='images', type='text', required='Did you delete the url?', disabled='true')
   #gallery
@@ -22,9 +21,17 @@ mixin gallery-edit
         }
 
         function parseImages(asEntity=false) {
-            const imgs = images.val().length > 0 ? JSON.parse(images.val()) : [];
+            const imgs = images.val().length > 0 ? images.val().split(',') : [];
             //todo: parse with header for entity
             return asEntity ? imgs : imgs;
+        }
+
+        function imageIcon(img) {
+          return `
+          <div class="image" data-image='${img}'><img src='${img}' />
+            <i class="icon fas fa-bookmark" data-image='${img}'></i>
+            <i class="icon fas fa-trash" data-image='${img}'></i>
+          </div>`;
         }
 
         function addImages(val) {
@@ -32,6 +39,7 @@ mixin gallery-edit
           function add(i) {
             if (imgs.indexOf(i)<0) {
               imgs.push(i);
+              gallery.append(imageIcon(i));
             }
           }
           if(Array.isArray(val)) {
@@ -41,32 +49,48 @@ mixin gallery-edit
             add(val);
           }
           images.empty().val(imgs);
+
+          $('.fa-bookmark').click(e => {
+            const img = e.currentTarget.getAttribute('data-image');
+            $('.image').removeClass('header');
+            $(".image[data-image='" + img + "']").addClass('header');
+          });
+
+          $('.fa-trash').click(e => {
+            const img = e.currentTarget.getAttribute('data-image');
+            removeImages(img);
+          });
+        }
+
+        function removeImages(val) {
+          const imgs = parseImages();
+          function del(i) {
+            const index = imgs.indexOf(i);
+            if (index > 0) {
+              imgs.splice(index,1);
+              const item = $(".image[data-image='" + i + "']");
+              item.remove();
+            }
+          }
+          if(Array.isArray(val)) {
+            val.forEach(img => del(img));
+          } 
+          else {
+            del(val);
+          }
+          images.empty().val(imgs);
         }
 
         function initGallery() {
-            // reset gallery
-            gallery.empty();
-            parseImages().forEach(img => gallery.append(`<img src='${img}' data-image='${img}' alt='${img}' />`));
+          // reset gallery
+          gallery.empty();
+          addImages(parseImages());
         }
 
-        $('#uploadLink').click(function(e) {
-          e.stopPropagation();
-          e.preventDefault();
-          const data = new FormData();
-          data.append('files', $('#imageUpload').files);
-          setStatus("Uploading...");
-          $.ajax({
-            url: '/admin/upload',
-            type: 'POST',
-            data: data,
-            contentType: false,
-            processData: false,
-            error: (error) => console.log(`Error: ${error.toString()}`),
-            success: (response) => {
-              addImages(response);
-              initGallery();
-              setStatus("Complete.");
-            }
-          });
+        $("#fileuploader").uploadFile({
+          url:"/admin/upload",
+          multiple: true,
+          showStatusAfterSuccess: false,
+          onSuccess:((files,data,xhr,pd) => addImages(data))
         });
       });

@@ -1684,24 +1684,37 @@ ol.default {
       padding: 0.75em 1.25em 0.75em 1.25em; } }
 
 /* My Stuff */
-.gallery div {
-  max-height: 200px;
-  max-width: 200px;
-  overflow: hidden;
-  display: inline-block;
+#gallery .image {
+  position: relative;
+  border: 1px solid #3399aa;
+  margin: 5px;
+  padding: 2px;
+  opacity: .8;
   cursor: pointer;
-  opacity: 0.8;
-  transition: 0.5s; }
+  transition: 1s; }
+  #gallery .image img {
+    max-height: 200px;
+    max-width: 200px; }
+  #gallery .image .icon {
+    right: 10px;
+    position: absolute;
+    color: #3399aa;
+    font-size: 1.5em; }
+  #gallery .image .icon:hover {
+    color: white;
+    box-shadow: rgba(0, 0, 0, 0.5); }
+  #gallery .image .icon.fa-bookmark {
+    top: 5px; }
+  #gallery .image .icon.fa-trash {
+    bottom: 10px; }
 
-.gallery div:hover {
+#gallery .image:hover {
   opacity: 1; }
 
-option.header-image {
-  background-repeat: no-repeat !important;
-  padding-left: 20px; }
-
-.header-image .ui-icon {
-  background-position: left top; }
+#gallery .image.header {
+  border: 2px solid #9933aa; }
+  #gallery .image.header .icon {
+    color: #9933aa; }
 
 /********************
 	FILE UPLOAD

@@ -1524,26 +1524,50 @@ $soft_white: #ccc;
 	}
 
 	/* My Stuff */
-	.gallery div {
-		max-height: 200px;
-		max-width: 200px;
-		overflow: hidden;
-		display: inline-block;
-		cursor: pointer;
-		opacity: 0.8;
-		transition: 0.5s;
-	}
-	
-	.gallery div:hover {
-		opacity: 1;
-	}
-	
-	option.header-image {
-		background-repeat: no-repeat !important;
-		padding-left: 20px;
-	  }
-	.header-image .ui-icon {
-		background-position: left top;
+
+	#gallery {
+
+		.image {
+			position: relative;
+			border: 1px solid #3399aa;
+			margin: 5px;
+			padding: 2px;
+			opacity: .8;
+			cursor: pointer;
+			transition: 1s;
+			
+			img {
+				max-height: 200px;
+				max-width: 200px;
+			}
+			
+			.icon {
+				right: 10px;
+				position: absolute;
+				color: #3399aa;
+				font-size: 1.5em;
+			}
+			.icon:hover {
+				color: white;
+				box-shadow: rgba(0, 0, 0, 0.5);
+			}
+
+			.icon.fa-bookmark {
+				top: 5px;
+			}
+			.icon.fa-trash {
+				bottom: 10px;
+			}
+		}
+		.image:hover {
+			opacity: 1;
+		}
+		.image.header {
+			border: 2px solid #9933aa;
+			.icon {
+				color: #9933aa;
+			}
+		}
 	}
 
 	/********************
