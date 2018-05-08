@@ -1529,7 +1529,7 @@ $soft_white: #ccc;
 
 		.image {
 			position: relative;
-			border: 1px solid #3399aa;
+			border: 2px solid rgba(0, 0, 0, 0);
 			margin: 5px;
 			padding: 2px;
 			opacity: .8;
@@ -1542,10 +1542,12 @@ $soft_white: #ccc;
 			}
 			
 			.icon {
-				right: 10px;
+				right: 3px;
 				position: absolute;
 				color: #3399aa;
+				background-color: rgba(0, 0, 0, 0.5);
 				font-size: 1.5em;
+				padding: 3px;
 			}
 			.icon:hover {
 				color: white;
@@ -1553,19 +1555,19 @@ $soft_white: #ccc;
 			}
 
 			.icon.fa-bookmark {
-				top: 5px;
+				top: 3px;
 			}
 			.icon.fa-trash {
-				bottom: 10px;
+				bottom: 3px;
 			}
 		}
 		.image:hover {
 			opacity: 1;
 		}
 		.image.header {
-			border: 2px solid #9933aa;
+			border: 2px solid #3399aa;;
 			.icon {
-				color: #9933aa;
+				visibility: hidden;
 			}
 		}
 	}

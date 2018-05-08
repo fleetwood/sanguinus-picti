@@ -1686,7 +1686,7 @@ ol.default {
 /* My Stuff */
 #gallery .image {
   position: relative;
-  border: 1px solid #3399aa;
+  border: 2px solid transparent;
   margin: 5px;
   padding: 2px;
   opacity: .8;
@@ -1696,25 +1696,27 @@ ol.default {
     max-height: 200px;
     max-width: 200px; }
   #gallery .image .icon {
-    right: 10px;
+    right: 3px;
     position: absolute;
     color: #3399aa;
-    font-size: 1.5em; }
+    background-color: rgba(0, 0, 0, 0.5);
+    font-size: 1.5em;
+    padding: 3px; }
   #gallery .image .icon:hover {
     color: white;
     box-shadow: rgba(0, 0, 0, 0.5); }
   #gallery .image .icon.fa-bookmark {
-    top: 5px; }
+    top: 3px; }
   #gallery .image .icon.fa-trash {
-    bottom: 10px; }
+    bottom: 3px; }
 
 #gallery .image:hover {
   opacity: 1; }
 
 #gallery .image.header {
-  border: 2px solid #9933aa; }
+  border: 2px solid #3399aa; }
   #gallery .image.header .icon {
-    color: #9933aa; }
+    visibility: hidden; }
 
 /********************
 	FILE UPLOAD

@@ -32,13 +32,7 @@ block page_content
                     .form-group
                         label.col-med-4.control-label(for='images', placeholder='Images') Gallery
                         .col-md-4
-                            +gallery-edit                        
-
-                    // HEADER IMAGE
-                    .form-group
-                        label.col-md-4.control-label(for='header-image', required="Select a header image.") Header image
-                        .col-md-4
-                            #select-header-wrapper.col-md-4
+                            +gallery-edit
 
                     // BODY
                     .form-group
@@ -78,7 +72,6 @@ block page_content
 
 block append scripts
     script(src="/trumbo/trumbowyg.min.js")
-    script(src='/unitegallery/themes/tiles/ug-theme-tiles.js')
     script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
     script.
         $(document).ready(function() {
@@ -108,5 +101,42 @@ block append scripts
                 }
                 const t = makeUrl(pageTitle.val());
                 $('#url').val(t);
+            });
+            
+            $('#save').click(function() {
+                function parseGallery() {
+                    const images = $('#images');
+                    const imgs = images.val().length > 0 ? images.val().split(',') : [];
+                    return {header: ($('.image.header').attr('data-image') || imgs[0]), images: imgs};
+                }
+                const imageGallery = parseGallery();
+                const data = {
+                    id: $('#pageId').val(),
+                    author_id: $('#author_id').val(),
+                    featured: $('#featured').val(),
+                    title: $('#title').val(),
+                    url: $('#url').val(),
+                    body: $('#body').val(),
+                    summary: $('#summary').val(),
+                    images: parseGallery(),
+                    pagetype: $('[name=pageType]:checked').val(),
+                };
+                const formData = new FormData();
+                formData.append('body', data);
+                $.ajax({
+                    data: formData,
+                    url: '/admin/update',
+                    type: 'POST',
+                    contentType: false,
+                    process: false,
+                    error: (error) => console.log(`Error: ${error.toString()}`),
+                    success: (response) => {
+                        console.log('Got a response');
+                        if (response.success) {
+                            window.location.href = response.url;
+                        }
+                    }
+                });
+                return false;
             });
         });

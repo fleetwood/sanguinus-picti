@@ -20,10 +20,8 @@ mixin gallery-edit
           status.empty().append(str);
         }
 
-        function parseImages(asEntity=false) {
-            const imgs = images.val().length > 0 ? images.val().split(',') : [];
-            //todo: parse with header for entity
-            return asEntity ? imgs : imgs;
+        function parseImages() {
+          return images.val().length > 0 ? images.val().split(',') : [];
         }
 
         function imageIcon(img) {

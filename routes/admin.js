@@ -31,10 +31,7 @@ const parseData = (data) => {
     pageType: data.pagetype,
     url: data.url,
     postDate: moment(new Date()).format('YYYY/MM/DD hh:mm:ss'),
-    images: {
-      header: data.header,
-      gallery: data.gallery
-    }
+    images: data.images
   };
 }
 

@@ -1,15 +1,9 @@
 extends ../layouts/full
+include ../mixins/gallery-edit
 
 block page_content
     article.box.post
         
-        section
-            h3 Upload images for gallery
-                form#uploadForm( enctype="multipart/form-data", action="/admin/upload", method="post")
-                    input(type="file", name="userPhoto", multiple)
-                    input(type="submit", value="Upload", name="submit")
-            span#status
-
         section
             form#new-page.form-horizontal
                 fieldset
@@ -39,14 +33,7 @@ block page_content
                     .form-group
                         label.col-med-4.control-label(for='images', placeholder='Images') Gallery
                         .col-md-4
-                            input#images.form-control.input-md(name='images', type='text', required='Did you delete the url?', disabled='true')
-                            #gallery(style="display:none;")
-
-                    // HEADER IMAGE
-                    .form-group
-                        label.col-md-4.control-label(for='header-image', required="Select a header image.") Header image
-                        .col-md-4
-                            #select-header-wrapper.col-md-4
+                            +gallery-edit
 
                     // BODY
                     .form-group
@@ -77,6 +64,8 @@ block page_content
                     .form-group
                         label.col-md-4.control-label(for='save')
                         .col-md-8
+                            // todo: get logged in user id
+                            input#author_id(type='hidden', value=1)
                             button#save.button(name='save') Save
                             button#cancel.button.alt(name='cancel') Cancel
 
@@ -86,120 +75,55 @@ block append scripts
     script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
     script.
         $(document).ready(function() {
-
-            $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
-                _renderItem: function( ul, item ) {
-                var li = $( "<li>" ),
-                    wrapper = $( "<div>", { text: item.label } );
-
-                if ( item.disabled ) {
-                    li.addClass( "ui-state-disabled" );
-                }
-
-                $( "<span>", {
-                    style: item.element.attr( "data-style" ),
-                    "class": "ui-icon " + item.element.attr( "data-class" )
-                })
-                    .appendTo( wrapper );
-
-                return li.append( wrapper ).appendTo( ul );
-                }
-            });
-
-            function makeUrl(str) {
-                str = str.trim().toLowerCase();
-                const spaces = /\s+/g;
-                const nonalpha = /[^[A-Za-z0-9\-]+/g;
-                const doubles = /[\-{2,}]+/g;
-                const max = 24;
-                function check(item, repl) {
-                    str = str.replace(item, repl);
-                }
-                check(spaces, '-');
-                check(nonalpha, '');
-                check(doubles, '-');
-                if (str.length >= max) {
-                    str = str.substr(0, max);
-                    const fullwordsonly = str.lastIndexOf('-');
-                    if (fullwordsonly > 0) {
-                        str = str.substr(0,fullwordsonly);
-                    }
-                }
-                return str;
-            }
-
-            function parseImages() {
-                return JSON.parse($('#images').val());
-            }
-
-            function initGallery(images = []) {
-                // reset gallery
-                const gallery = $('#gallery');
-                gallery.css('display','none')
-                       .empty();
-
-                // reset header wrapper
-                $('#select-header-wrapper')
-                    .empty()
-                    .append('<select class="form-control" id="header-image" name="header-image" placeholder="Select a header image"></select>');
-                const headerimage = $('#header-image');
-                
-                // iterate through images and 
-                // add to gallery and wrapper
-                images.forEach(img => {
-                    gallery.append(`<img src='${img}' data-image='${img}' alt='' />`);
-                    headerimage.append(`<option value="${img}" data-class="header-image" data-style="background-image: url(${img});background-size: 40px 40px;">${img}</option>`);
-                });
-
-                // init unitegallery
-                gallery.unitegallery({
-                    gallery_theme: "tiles",
-                    lightbox_type: "compact"
-                });
-
-                // init iconmenu (header-image)
-                headerimage
-                    .iconselectmenu()
-                    .iconselectmenu( "menuWidget")
-                    .addClass( "ui-menu-icons header-image" );
-            };
-
             $('#body').trumbowyg();
-            $('#title').keyup(() => $('#url').val(makeUrl($('#title').val())));
+            const pageTitle = $('#title');
 
-            $('#uploadForm').submit(function() {
-                $("#status").empty().text("Uploading...");
-                $(this).ajaxSubmit({
-                    error: (error) => console.log(`Error: ${error.toString()}`),
-                    success: (response) => {
-                        const images = $('#images');
-                        let gallery = images.val().length > 0 ? images.val().split(',') : [];
-                        response.forEach(a => {
-                            if (gallery.indexOf(a) < 0) {
-                                gallery.push(a);
-                            }
-                        });
-                        $("#status").empty().text("Complete.");
-                        images.val(gallery);
-                        initGallery(gallery);
+            pageTitle.keyup((e) => {
+                function makeUrl(str) {
+                    str = str.trim().toLowerCase();
+                    const spaces = /\s+/g;
+                    const nonalpha = /[^[A-Za-z0-9\-]+/g;
+                    const doubles = /[\-{2,}]+/g;
+                    const max = 24;
+                    function check(item, repl) {
+                        str = str.replace(item, repl);
                     }
-                });
-                return false;
+                    check(spaces, '-');
+                    check(nonalpha, '');
+                    check(doubles, '-');
+                    if (str.length >= max) {
+                        str = str.substr(0, max);
+                        const fullwordsonly = str.lastIndexOf('-');
+                        if (fullwordsonly > 0) {
+                            str = str.substr(0,fullwordsonly);
+                        }
+                    }
+                    return str;
+                }
+                const t = makeUrl(pageTitle.val());
+                $('#url').val(t);
             });
 
             $('#save').click(function() {
+                function parseGallery() {
+                    const images = $('#images');
+                    const imgs = images.val().length > 0 ? images.val().split(',') : [];
+                    return {header: ($('.image.header').attr('data-image') || imgs[0]), images: imgs};
+                }
+                const imageGallery = parseGallery();
                 const data = {
                     featured: $('#featured').val(),
                     title: $('#title').val(),
                     url: $('#url').val(),
                     body: $('#body').val(),
                     summary: $('#summary').val(),
-                    header: $('#header-image').val(),
-                    gallery: parseImages(),
+                    images: parseGallery(),
                     pagetype: $('[name=pageType]:checked').val(),
                 };
+                const formData = new FormData();
+                formData.append('body', data);
                 $.ajax({
-                    data: data,
+                    data: formData,
                     url: '/admin/create',
                     type: 'POST',
                     error: (error) => console.log(`Error: ${error.toString()}`),
