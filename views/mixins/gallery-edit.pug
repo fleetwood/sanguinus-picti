@@ -1,94 +1,112 @@
-mixin gallery-edit
+mixin gallery-edit(data)
 
-  Upload images for gallery
-      #uploadForm
-          #fileuploader= Upload
-  span#status
-  input#images.form-control.input-md(name='images', type='text', required='Did you delete the url?', disabled='true')
-  #gallery
+  #uploadForm
+    #fileuploader= Upload
+    span#status
+    input#images.form-control.input-md(
+      name='images',
+      type='hidden',
+      disabled='true' 
+      value=(data && data.gallery ? data.gallery.toString() : '')
+    )
+    input#header-image.form-control.input-md(
+      name='header-image',
+      type='hidden',
+      disabled='true' 
+      value=(data && data.header ? data.header : '')
+    )
+    #gallery
 
-  block append scripts
-    script(src='/unitegallery/themes/tiles/ug-theme-tiles.js')
-    script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
-    script.
-      $(document).ready(function() {
-        const status = $('#status');
-        const gallery = $('#gallery');
-        const images = $('#images');
+    block append scripts
+      script(src='/unitegallery/themes/tiles/ug-theme-tiles.js')
+      script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+      script.
+        $(document).ready(function() {
+          const gallery = $('#gallery');
+          const images = $('#images');
+          const headerImage = $('#header-image');
 
-        function setStatus(str = "") {
-          status.empty().append(str);
-        }
-
-        function parseImages() {
-          return images.val().length > 0 ? images.val().split(',') : [];
-        }
-
-        function imageIcon(img) {
-          return `
-          <div class="image" data-image='${img}'><img src='${img}' />
-            <i class="icon fas fa-bookmark" data-image='${img}'></i>
-            <i class="icon fas fa-trash" data-image='${img}'></i>
-          </div>`;
-        }
-
-        function addImages(val) {
-          const imgs = parseImages();
-          function add(i) {
-            if (imgs.indexOf(i)<0) {
-              imgs.push(i);
-              gallery.append(imageIcon(i));
-            }
+          function parseImages() {
+            return images.val().length > 0 ? images.val().split(',') : [];
           }
-          if(Array.isArray(val)) {
-            val.forEach(img => add(img));
-          } 
-          else {
-            add(val);
-          }
-          images.empty().val(imgs);
 
-          $('.fa-bookmark').click(e => {
-            const img = e.currentTarget.getAttribute('data-image');
+          function imageIcon(img) {
+            return `
+            <div class="image" data-image='${img}'><img src='${img}' />
+              <i class="icon fas fa-bookmark" data-image='${img}'></i>
+              <i class="icon fas fa-trash" data-image='${img}'></i>
+            </div>`;
+          }
+
+          function setHeader(img) {
             $('.image').removeClass('header');
+            headerImage.val(img);
             $(".image[data-image='" + img + "']").addClass('header');
-          });
+          }
 
-          $('.fa-trash').click(e => {
-            const img = e.currentTarget.getAttribute('data-image');
-            removeImages(img);
-          });
-        }
+          function addImages(val) {
+            const imgs = parseImages();
+            function add(i) {
+              if (imgs.indexOf(i)<0) {
+                imgs.push(i);
+                gallery.append(imageIcon(i));
+              }
+            }
+            if(Array.isArray(val)) {
+              val.forEach(img => add(img));
+            } 
+            else {
+              add(val);
+            }
+            images.empty().val(imgs);
 
-        function removeImages(val) {
-          const imgs = parseImages();
-          function del(i) {
-            const index = imgs.indexOf(i);
-            if (index > 0) {
-              imgs.splice(index,1);
-              const item = $(".image[data-image='" + i + "']");
-              item.remove();
+            $('.fa-bookmark').click(e => {
+              const img = e.currentTarget.getAttribute('data-image');
+              setHeader(img);
+            });
+
+            $('.fa-trash').click(e => {
+              const img = e.currentTarget.getAttribute('data-image');
+              removeImages(img);
+            });
+          }
+
+          function removeImages(val) {
+            const imgs = parseImages();
+            function del(i) {
+              const index = imgs.indexOf(i);
+              if (index > 0) {
+                imgs.splice(index,1);
+                const item = $(".image[data-image='" + i + "']");
+                item.remove();
+              }
+            }
+            if(Array.isArray(val)) {
+              val.forEach(img => del(img));
+            } 
+            else {
+              del(val);
+            }
+            images.val(imgs);
+          }
+
+          function initGallery(arr = null) {
+            // reset gallery
+            const imgs = arr || parseImages();
+            gallery.empty();
+            images.val('');
+            addImages(imgs);
+            if ($('#header-image').val().length > 0) {
+              setHeader($('#header-image').val());
             }
           }
-          if(Array.isArray(val)) {
-            val.forEach(img => del(img));
-          } 
-          else {
-            del(val);
-          }
-          images.empty().val(imgs);
-        }
 
-        function initGallery() {
-          // reset gallery
-          gallery.empty();
-          addImages(parseImages());
-        }
+          $("#fileuploader").uploadFile({
+            url:"/admin/upload",
+            multiple: true,
+            showStatusAfterSuccess: false,
+            onSuccess:((files,data,xhr,pd) => addImages(data))
+          });
 
-        $("#fileuploader").uploadFile({
-          url:"/admin/upload",
-          multiple: true,
-          showStatusAfterSuccess: false,
-          onSuccess:((files,data,xhr,pd) => addImages(data))
+          initGallery();
         });
-      });

@@ -32,7 +32,7 @@ block page_content
                     .form-group
                         label.col-med-4.control-label(for='images', placeholder='Images') Gallery
                         .col-md-4
-                            +gallery-edit
+                            +gallery-edit(data.images)
 
                     // BODY
                     .form-group
@@ -104,12 +104,9 @@ block append scripts
             });
             
             $('#save').click(function() {
-                function parseGallery() {
-                    const images = $('#images');
-                    const imgs = images.val().length > 0 ? images.val().split(',') : [];
-                    return {header: ($('.image.header').attr('data-image') || imgs[0]), images: imgs};
-                }
-                const imageGallery = parseGallery();
+                const images = $('#images');
+                const gallery = images.val().length > 0 ? images.val().split(',') : [];
+                const header = $('.image.header').attr('data-image') || gallery[0];
                 const data = {
                     id: $('#pageId').val(),
                     author_id: $('#author_id').val(),
@@ -118,24 +115,23 @@ block append scripts
                     url: $('#url').val(),
                     body: $('#body').val(),
                     summary: $('#summary').val(),
-                    images: parseGallery(),
+                    header: header,
+                    gallery: gallery.toString(),
                     pagetype: $('[name=pageType]:checked').val(),
                 };
-                const formData = new FormData();
-                formData.append('body', data);
                 $.ajax({
-                    data: formData,
                     url: '/admin/update',
                     type: 'POST',
-                    contentType: false,
-                    process: false,
-                    error: (error) => console.log(`Error: ${error.toString()}`),
-                    success: (response) => {
+                    data: data,
+                    error: ((error) => {
+                        console.log(`Error: ${error.toString()}`);
+                    }),
+                    success: ((response) => {
                         console.log('Got a response');
                         if (response.success) {
                             window.location.href = response.url;
                         }
-                    }
+                    })
                 });
                 return false;
             });

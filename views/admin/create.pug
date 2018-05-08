@@ -108,7 +108,8 @@ block append scripts
                 function parseGallery() {
                     const images = $('#images');
                     const imgs = images.val().length > 0 ? images.val().split(',') : [];
-                    return {header: ($('.image.header').attr('data-image') || imgs[0]), images: imgs};
+                    const himg = $('.image.header').attr('data-image') || imgs[0];
+                    return {header: himg, images: imgs};
                 }
                 const imageGallery = parseGallery();
                 const data = {
@@ -118,14 +119,15 @@ block append scripts
                     body: $('#body').val(),
                     summary: $('#summary').val(),
                     images: parseGallery(),
-                    pagetype: $('[name=pageType]:checked').val(),
+                    pagetype: $('[name=pageType]:checked').val()
                 };
-                const formData = new FormData();
-                formData.append('body', data);
                 $.ajax({
-                    data: formData,
                     url: '/admin/create',
                     type: 'POST',
+                    dataType: "json",
+                    data: data,
+                    contentType: "application/json",
+                    cache: false,
                     error: (error) => console.log(`Error: ${error.toString()}`),
                     success: (response) => {
                         console.log('Got a response');

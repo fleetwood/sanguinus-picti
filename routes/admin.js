@@ -31,7 +31,10 @@ const parseData = (data) => {
     pageType: data.pagetype,
     url: data.url,
     postDate: moment(new Date()).format('YYYY/MM/DD hh:mm:ss'),
-    images: data.images
+    images: {
+      header: data.header,
+      gallery: data.gallery.split(',')
+    }
   };
 }
 
@@ -39,7 +42,7 @@ router.restricted('/edit-page/:id', (req, res) => {
   const user = res.locals.user;
   page.getMenus()
     .then(menus => {
-      page.one({name: 'pages', where: {id: req.params.id}})
+      page.one({ name: 'pages', where: { id: req.params.id } })
         .then(result => {
           if (result) {
             return res.render('admin/edit-page', page.viewData(router.user, menus, result));
@@ -56,36 +59,34 @@ router.restricted('/edit-page/:id', (req, res) => {
 });
 
 router.restricted('/create', (req, res) => {
-    page.getMenus()
-      .then(menus => {
-        res.render('admin/create', page.viewData(router.user, menus, {}));
-      })
-      .catch(err => {
-        router.renderError(res, err);
-      })
-  });
+  page.getMenus()
+    .then(menus => {
+      res.render('admin/create', page.viewData(router.user, menus, {}));
+    })
+    .catch(err => {
+      router.renderError(res, err);
+    })
+});
 
 router.post('/create', (req, res) => {
-    const data = req.body;
-    const page = data.pagetype == Page.pageTypes.tattoo ? Tattoo : Blog;
+  const data = req.body;
+  const page = data.pagetype == Page.pageTypes.tattoo ? Tattoo : Blog;
 
-    const pageData = parseData(data);
-    page.insert(pageData)
-      .then(results => {
-        res.status(200).send({
-          success: true,
-          results: results[0],
-          url: `/${results[0].pageType}/${results[0].url}`
-        });
-        // redirect?
-      })
-      .catch(err => {
-        res.status(500).send(JSON.stringify(err, null, 2));
+  const pageData = parseData(data);
+  page.insert(pageData)
+    .then(results => {
+      res.status(200).json({
+        success: true,
+        results: results[0],
+        url: `/${results[0].pageType}/${results[0].url}`
       });
-  });
+      // redirect?
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
 
-
-/* POST upload images */
 router.post('/upload', (req, res) => {
   upload(req, res, function (err) {
     if (err) {
@@ -98,18 +99,21 @@ router.post('/upload', (req, res) => {
   });
 });
 
-/* POST update the page */
 router.post('/update', (req, res) => {
   const data = req.body;
   const page = data.pagetype == Page.pageTypes.tattoo ? Tattoo : Blog;
 
   const pageData = parseData(data);
-  page.update(parseInt(data.id), parseData(pageData))
+  page.update(parseInt(data.id), pageData)
     .then(results => {
-      res.status(200).send({success: true, data: results});
+      res.status(200).json({
+        success: true,
+        results: results,
+        url: `/${results.pageType}/${results.url}`
+      });
     })
     .catch(err => {
-      res.status(500).send(JSON.stringify(err, null, 2));
+      res.status(500).json(JSON.stringify(err, null, 2));
     });
 });
 
