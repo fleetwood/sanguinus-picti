@@ -1,20 +1,28 @@
 extends ../layouts/left
+include ../mixins/artist-preview
 
 block page_content
   article.box.post
     img(src=data.images.header, class="12u")
     header
-      if loggedIn
-        h2
-          a(href=`/admin/edit-page/${data.id}`)= data.title
-      else
-        h2= data.title
+      .row
+        .div(class='6u 12u(mobile)')
+          if loggedIn
+            h2
+              a(href=`/admin/edit-page/${data.id}`)= data.title
+                i(class="icon fas fa-edit", style="margin-right: 1em;position: absolute;font-size: 1.5em;right: 20px;")
+          else
+            h2= data.title
+        .div(class='6u 12u(mobile)')
+          for author in data.authors
+            +artist-preview(author)
     
     .row
-      .div(class='6u 12u(mobile)') Posted by: #{data.name} #{recentDate(data.postDate)}
+      .div(class='6u 12u(mobile)') Posted on #{recentDate(data.postDate)}
       .div(class='6u 12u(mobile) sharethis-inline-share-buttons')
       
     hr
+
     section!= data.body
     
     #gallery(style="display:none;")

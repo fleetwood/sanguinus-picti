@@ -5,6 +5,7 @@ class Page extends KnexModel {
         super(Page.definition);
         this._title = title;
         this._pageType = type;
+        this._user = this._user || null;
     }
 
     static get definition() {
@@ -74,32 +75,51 @@ class Page extends KnexModel {
         return KnexModel.tables;
     }
 
-    viewData(user, menus, data) {
+    get user() {
+        return this._user;
+    }
+    
+    parseData(pageData) {
         return {
             title: this.title,
             current: this.pageType,
-            user,
+            user: this.user,
             menus,
             data
         };
     };
 
-    pageData(menus, pageData) {
+    viewData(user, menus, data) {
         return {
-            menus: menus,
-            id: pageData.id,
-            url: pageData.url,
-            title: pageData.title,
-            summary: pageData.summary,
-            body: pageData.body,
-            featured: pageData.featured,
-            header: pageData.images.header,
-            gallery: pageData.images.gallery,
-            pageType: pageData.pageType,
-            isBlog: pageData.pageType === Page.pageTypes.blog,
-            isTattoo: pageData.pageType === Page.pageTypes.tattoos
+            title: this.title,
+            current: this.pageType,
+            user: this.user,
+            menus,
+            data
         };
     };
+
+    getPageData(req) {
+        return new Promise((resolve, reject) => {
+            this.pageData(req.params.url)
+                .then((results) => {
+                    const data = {
+                        title: this.title,
+                        current: this.pageType,
+                        user: this.user,
+                        menus: {
+                            featuredblogs: results.featuredBlogs.featuredblogs,
+                            featuredtattoos: results.featuredTattoos.featuredtattoos
+                        },
+                        data: results
+                    };
+                    resolve(data);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    }
 }
 
 module.exports = Page;

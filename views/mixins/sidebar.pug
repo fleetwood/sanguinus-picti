@@ -5,9 +5,9 @@ mixin sidebar
         header
             h3 Tattoos
         
-            unless !menus.featuredTats
+            unless !menus.featuredtattoos
                 #sidebar-gallery(style="display:none;")
-                    for tattoo in menus.featuredTats
+                    for tattoo in menus.featuredtattoos
                         a(href=`/tattoos/${tattoo.url}`, target='_top')
                             img(src=tattoo.images.header, data-image=tattoo.images.header, alt=tattoo.summary)
 
@@ -16,9 +16,9 @@ mixin sidebar
         header
             h3 Blog
 
-            unless !menus.featuredBlogs 
+            unless !menus.featuredblogs 
                 ul.divided
-                    for blog in menus.featuredBlogs
+                    for blog in menus.featuredblogs
                         li
                             a(href=`./blog/${blog.url}`, target='_top')
                                 = blog.title
@@ -30,7 +30,7 @@ mixin sidebar
                 a.button.alt(href='#') Contact Us
 
 
-    unless !menus.featuredTats
+    unless !menus.featuredtattoos
         block append scripts
             script(src='/unitegallery/themes/tilesgrid/ug-theme-tilesgrid.js')
             script.

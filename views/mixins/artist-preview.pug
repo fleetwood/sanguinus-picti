@@ -1,0 +1,7 @@
+mixin artist-preview(artist)
+
+  div(class='artist-info')
+    div(data-src=artist.auth0, class='popup')
+      a(class='button', href=`/about/${artist.firstname}`)
+        | See #{artist.firstname}'s work
+    img(data-target=artist.auth0, class='thumb', src=artist.image.replace('.jpg','_th.jpg'))

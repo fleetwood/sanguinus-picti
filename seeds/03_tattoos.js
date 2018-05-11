@@ -5,7 +5,7 @@ exports.seed = function (knex, Promise) {
   return knex(tattoo.tableName).insert([
 
     {
-      url: 'tattoo-1',
+      url: 'test-tattoo-one',
       pageType: pageType,
       title: 'Test Tattoo One',
       body: 'Lorem ipsum dolor sit amet. This is a test tattoo.',
@@ -19,12 +19,12 @@ exports.seed = function (knex, Promise) {
         ]
       },
       featured: true,
-      author_id: 1,
+      authors: [2],
       postDate: '2018/04/02'
     },
 
     {
-      url: 'tattoo-2',
+      url: 'test-tattoo-two',
       pageType: pageType,
       title: 'Test Tattoo Two',
       body: 'Lorem ipsum dolor sit amet. This is a test tattoo.',
@@ -37,14 +37,14 @@ exports.seed = function (knex, Promise) {
         ]
       },
       featured: false,
-      author_id: 2,
+      authors: [1,2],
       postDate: '2018/04/12'
     },
 
     {
-      url: 'heidi',
+      url: 'camera-apertures',
       pageType: pageType,
-      title: 'Heidi Denney',
+      title: 'Camera Apertures',
       body: 'Lorem ipsum dolor sit amet. This is a test tattoo.',
       summary: 'Heidi Denney.',
       images: {
@@ -62,7 +62,7 @@ exports.seed = function (knex, Promise) {
         ]
       },
       featured: true,
-      author_id: 1,
+      authors: [1],
       postDate: '2018/04/18'
     }
   ]);

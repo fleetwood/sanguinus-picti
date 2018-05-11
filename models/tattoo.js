@@ -1,9 +1,10 @@
 const Page = require('./Page');
 
 class Tattoo extends Page {
-    constructor() {
+    constructor(user) {
         super('Tattoos', Page.pageTypes.tattoos);
+        this._user = this._user || user || null;
     }
 }
 
-module.exports = new Tattoo();
+module.exports = Tattoo;

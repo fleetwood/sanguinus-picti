@@ -1721,3 +1721,35 @@ $soft_white: #ccc;
 		{
 			margin:20px 0px 20px 0px;
 		}
+
+		/*****************
+		ARTIST PREVIEW
+		*****************/
+		
+		.artist-info {
+			transition: 1s;
+			float: right;
+			margin-left: 10px;
+		}
+		.artist-info > .thumb {
+				max-width: 60px;
+				border-radius: 60px;
+				max-height: 60px;
+				padding: 3px;
+				border: solid 2px #555555;
+				cursor: pointer;
+		}
+		.artist-info:hover > .thumb {
+			border: solid 2px #d52349;
+		}
+		
+		.artist-info > .popup {
+			display: none;
+			border-radius: 20px;
+			margin: -25px 0 0 -175px;
+			position: absolute;
+		}
+
+		.artist-info:hover > .popup, .popup:hover {
+			display: block;
+		}

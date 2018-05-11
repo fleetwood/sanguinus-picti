@@ -1,19 +1,15 @@
-const page = require('../models/Tattoo');
 const router = require('../helpers/Router');
+const Tattoo = require('../models/Tattoo');
+const page = new Tattoo(router.user);
 
 /* GET tattoo list */
 router.get('/tattoos', (req, res) => {
   page.getMenus()
     .then(menus =>  {
-      page.all({
-        name: page.tables.views.page_author, 
-        where: { pageType: page.pageType },
-        orderCol: page.tables.postDate,
-        orderDir: page.tables.sort.desc
-      })
-      .then(results => {
-        res.render('tattoos/list', page.viewData(router.user, menus, results));
-      })
+      page.getTattoos()
+        .then(results => {
+          res.render('tattoos/list', page.viewData(menus, results));
+        });
     })
     .catch(err => {
       router.renderError(res, err);
@@ -22,19 +18,9 @@ router.get('/tattoos', (req, res) => {
 
 /* GET single tattoo */
 router.get('/tattoos/:url', (req, res) => {
-  const byTattooUrl = {
-    name: page.tables.views.page_author,
-    where: {
-      url: req.params.url
-    }
-  };
-
-  page.getMenus()
-    .then(menus => {
-      page.one(byTattooUrl)  
-        .then(results => {
-          res.render('tattoos/index', page.viewData(router.user, menus, results));
-        });
+  page.getPageData(req)
+    .then(results => {
+      res.render('tattoos/index', results);
     })
     .catch(err => {
       router.renderError(res, err);

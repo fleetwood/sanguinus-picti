@@ -3,10 +3,10 @@ exports.up = function (knex, Promise) {
 
         knex.schema.createTable('users', function(table) {
             table.increments('id').primary();
-            table.string('username');
-            table.string('password');
-            table.string('name');
-            table.string('email');
+            table.string('firstname');
+            table.string('lastname');
+            table.string('image');
+            table.string('auth0');
             table.timestamps();
         }),
 
@@ -18,10 +18,8 @@ exports.up = function (knex, Promise) {
             table.string('body');
             table.string('summary');
             table.jsonb('images');
+            table.specificType('authors', 'int[]');
             table.boolean('featured');
-            table.integer('author_id')
-                 .references('id')
-                 .inTable('users');
             table.dateTime('postDate');
             table.timestamps();
         })

@@ -4,17 +4,17 @@ exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
   return knex(user.tableName).insert([
     {
-      username: 'fleetwood',
-      password: 'lkjlkj',
-      name: 'John Fleetwood',
-      email: 'wizening@gmail.com'
+      firstname: 'John',
+      lastname: 'Fleetwood',
+      image: 'images/JF.jpg',
+      auth0: 'auth0|5aee9779f24e8821c4dbc230'
     },
 
     {
-      username: 'christina',
-      password: 'lkjlkj',
-      name: 'Christina Fleetwood',
-      email: 'satchalen@hotmail.com'
+      firstname: 'Christina',
+      lastname: 'Fleetwood',
+      image: 'images/CF.jpg',
+      auth0: 'auth0|5aee9929e1f6ba712cfa3f23'
     }
   ]);
 };

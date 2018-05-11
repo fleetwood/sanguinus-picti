@@ -10,20 +10,20 @@ mixin navbar(active)
                 a(href='/about') About Us
 
             unless !menus
-                unless !menus.featuredTats
+                unless !menus.featuredtattoos
                     li(class=`${active == 'tattoos' ? 'current' : ''}`)
                         a(href='/tattoos') Tattoos
                             ul
-                                for tattoo in menus.featuredTats
+                                for tattoo in menus.featuredtattoos
                                     li
                                         //- a(href=`/tattoos/${tattoo.url}`)= tattoo.title
                                         a(href=`/admin/edit-page/${tattoo.id}`)= tattoo.title
 
-                unless !menus.featuredBlogs
+                unless !menus.featuredblogs
                     li(class=`${active == 'blog' ? 'current' : ''}`)
                         a(href='/blog') Blog
                             ul
-                                for blog in menus.featuredBlogs
+                                for blog in menus.featuredblogs
                                     li
                                         a(href=`/blog/${blog.url}`)= blog.title
             
