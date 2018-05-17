@@ -42,7 +42,7 @@ router.restricted('/edit-page/:id', (req, res) => {
   const user = res.locals.user;
   page.getMenus()
     .then(menus => {
-      page.one({ name: 'pages', where: { id: req.params.id } })
+      page.one({ from: page.tables.pages, where: { id: req.params.id } })
         .then(result => {
           if (result) {
             return res.render('admin/edit-page', page.viewData(router.user, menus, result));

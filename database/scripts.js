@@ -63,18 +63,56 @@ const views = {
         OWNER TO postgres;
         `,
     menus:`
-        -- View: public.menus
+    -- View: public.menus
 
-        -- DROP VIEW public.menus;
+    -- DROP VIEW public.menus;
+    
+    CREATE OR REPLACE VIEW public.menus AS 
+     with fb as (
+        SELECT json_build_object(
+           'id', t.id, 
+           'url', t.url, 
+           'pageType', t."pageType",
+           'title', t.title, 
+           'body', t.body, 
+           'summary', t.summary, 
+           'images', t.images, 
+           'featured', t.featured, 
+           'postDate', t."postDate", 
+           'authors', t.authors
+        ) as blogs
+        FROM blogs t 
+        WHERE t.featured = true
+        ),
+    
+        ft as (
+          SELECT json_build_object(
+           'id', t.id, 
+           'url', t.url, 
+           'pageType', t."pageType", 
+           'title', t.title, 
+           'body', t.body, 
+           'summary', t.summary, 
+           'images', t.images, 
+           'featured', t.featured, 
+           'postDate', t."postDate", 
+           'authors', t.authors
+        ) as tattoos
+          from tattoos t
+          where t.featured = true
+        )
         
-        CREATE OR REPLACE VIEW public.menus AS 
-        SELECT json_agg(json_build_object('id', b.id, 'url', b.url, 'pageType', b."pageType", 'title', b.title, 'body', b.body, 'summary', b.summary, 'images', b.images, 'featured', b.featured, 'postDate', b."postDate", 'authors', b.authors)) AS featuredblogs,
-            json_agg(json_build_object('id', t.id, 'url', t.url, 'pageType', t."pageType", 'title', t.title, 'body', t.body, 'summary', t.summary, 'images', t.images, 'featured', t.featured, 'postDate', t."postDate", 'authors', t.authors)) AS featuredtattoos
-        FROM blogs b
-            JOIN tattoos t ON t.featured = true;
-        
-        ALTER TABLE public.menus
-        OWNER TO develop;
+    SELECT json_build_object(
+        'featuredblogs', 
+        (select json_agg(b.blogs) 
+        from fb b),
+        'featuredtattoos', 
+        (select json_agg(t.tattoos) 
+        from ft t)
+    ) as menus;
+    
+    ALTER TABLE public.menus
+      OWNER TO develop;
     `,
     cf_tats: `
         -- DROP VIEW public.cf_tats;

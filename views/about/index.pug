@@ -1,0 +1,24 @@
+extends ../layouts/full
+
+block page_content
+  .article.box.post
+    .row
+      div(class="6u 12u(mobile)")
+        h3 Christina Fleetwood
+        a(href=`/about/Christina`)
+          img(src=data.christina.info.image)
+        hr
+        .gallery
+          for img in data.christina.tattoos
+            a(href=`/tattoos/${img.url}`, class='image')
+              img(src=img.images.header)
+
+      div(class="6u 12u(mobile)")
+        h3 John Fleetwood
+        a(href=`/about/John`)
+          img(src=data.john.info.image)
+        hr
+        .gallery
+          for img in data.john.tattoos
+            a(href=`/tattoos/${img.url}`, class='image')
+              img(src=img.images.header)

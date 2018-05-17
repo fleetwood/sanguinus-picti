@@ -1,2 +1,2 @@
-# sanguinus-picti
+# sanguinis-picti
 Tattoo site

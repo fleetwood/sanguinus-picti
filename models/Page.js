@@ -94,7 +94,7 @@ class Page extends KnexModel {
             title: this.title,
             current: this.pageType,
             user: this.user,
-            menus,
+            menus: menus.menus || menus,
             data
         };
     };

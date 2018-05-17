@@ -1120,7 +1120,7 @@ ol.default {
 /* Wrappers */
 #header-wrapper {
   position: relative;
-  background: #ddd url("/images/tat01.jpg");
+  background: #ddd url("/images/header.jpg");
   background-position: top center;
   background-size: 100%;
   background-repeat: no-repeat;
@@ -1287,7 +1287,8 @@ ol.default {
         display: none; }
       #nav > ul > li > a {
         border-radius: 5px;
-        color: #5d5d5d;
+        background: #5d5d5d;
+        color: #ddd;
         text-decoration: none;
         padding: 0.6em 1.2em 0.6em 1.2em;
         -moz-transition: background-color .25s ease-in-out;
@@ -1296,7 +1297,8 @@ ol.default {
         transition: background-color .25s ease-in-out;
         outline: 0; }
       #nav > ul > li:hover > a, #nav > ul > li.active > a {
-        background: #f3f3f3; }
+        background: #ddd;
+        color: #5d5d5d; }
       #nav > ul > li.current > a {
         background: #d52349;
         color: #fff !important;
@@ -1683,39 +1685,49 @@ ol.default {
     #copyright .links {
       padding: 0.75em 1.25em 0.75em 1.25em; } }
 
+/***********************
+	sanguinis picti
+	***********************/
 /* My Stuff */
-#gallery .image {
+.gallery .image {
   position: relative;
   border: 2px solid transparent;
   margin: 5px;
   padding: 2px;
   opacity: .8;
   cursor: pointer;
-  transition: 1s; }
-  #gallery .image img {
+  transition: 1s;
+  float: left; }
+  .gallery .image img {
     max-height: 200px;
     max-width: 200px; }
-  #gallery .image .icon {
+  .gallery .image img.img-150 {
+    max-height: 150px;
+    max-width: 150px; }
+  .gallery .image img.img-100 {
+    max-height: 100px;
+    max-width: 100px; }
+  .gallery .image .icon {
     right: 3px;
     position: absolute;
     color: #3399aa;
     background-color: rgba(0, 0, 0, 0.5);
     font-size: 1.5em;
     padding: 3px; }
-  #gallery .image .icon:hover {
+  .gallery .image .icon:hover {
     color: white;
     box-shadow: rgba(0, 0, 0, 0.5); }
-  #gallery .image .icon.fa-bookmark {
+  .gallery .image .icon.fa-bookmark {
     top: 3px; }
-  #gallery .image .icon.fa-trash {
+  .gallery .image .icon.fa-trash {
     bottom: 3px; }
 
-#gallery .image:hover {
+.gallery .image:hover {
   opacity: 1; }
 
-#gallery .image.header {
+.gallery .image.header {
   border: 2px solid #3399aa; }
-  #gallery .image.header .icon {
+  .gallery .image.header .icon {
     visibility: hidden; }
 
 /********************

@@ -4,6 +4,7 @@ const definition = {
     tableName: 'users',
     key: 'id',
     fields: {
+        // todo: update
         properties: {
             username: {
                 type: 'string',

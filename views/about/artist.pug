@@ -1,0 +1,20 @@
+extends ../layouts/full
+
+block page_content
+  .article.box.post
+    .row
+      div(class="6u 12u(mobile)")
+        h2= data.artist.firstname + ' ' +data.artist.lastname 
+        
+        section
+          img(src=data.artist.image, class="portrait")
+
+        section
+          p
+            About the artist
+      
+      div(class="6u 12u(mobile)")
+        .gallery
+          for tattoo in data.tattoos
+            a(href=`/tattoos/${tattoo.url}`, class="image")
+              img(src=tattoo.img, class="img-150")

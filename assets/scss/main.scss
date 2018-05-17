@@ -646,7 +646,7 @@ $soft_white: #ccc;
 
 	#header-wrapper {
 		position: relative;
-		background: $mostly_white url("/images/tat01.jpg");
+		background: $mostly_white url("/images/header.jpg");
 		background-position: top center;
 		background-size: 100%;
 		background-repeat: no-repeat;
@@ -919,7 +919,8 @@ $soft_white: #ccc;
 
 						> a {
 							border-radius: 5px;
-							color: $text_gray_1;
+							background: $text_gray_1;
+							color: $mostly_white;
 							text-decoration: none;
 							padding: 0.6em 1.2em 0.6em 1.2em;
 							@include vendor('transition', 'background-color .25s ease-in-out');
@@ -928,7 +929,8 @@ $soft_white: #ccc;
 
 						&:hover, &.active {
 							> a {
-								background: #f3f3f3;
+								background: $mostly_white;
+								color: $text_gray_1;
 							}
 						}
 
@@ -1523,9 +1525,14 @@ $soft_white: #ccc;
 
 	}
 
+	/***********************
+	sanguinis picti
+	***********************/
+
 	/* My Stuff */
 
-	#gallery {
+	
+	.gallery {
 
 		.image {
 			position: relative;
@@ -1535,10 +1542,20 @@ $soft_white: #ccc;
 			opacity: .8;
 			cursor: pointer;
 			transition: 1s;
+			float:left;
 			
 			img {
 				max-height: 200px;
 				max-width: 200px;
+			}
+			img.img-150 {
+				max-height: 150px;
+				max-width: 150px;
+			}
+
+			img.img-100 {
+				max-height: 100px;
+				max-width: 100px;
 			}
 			
 			.icon {
@@ -1553,7 +1570,6 @@ $soft_white: #ccc;
 				color: white;
 				box-shadow: rgba(0, 0, 0, 0.5);
 			}
-
 			.icon.fa-bookmark {
 				top: 3px;
 			}

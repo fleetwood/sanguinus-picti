@@ -24,7 +24,7 @@ class ViewPage {
    */
     recentBlogList(done) {
         return blogs.all({
-            name: this.blogs.dbviews.page_author,
+            from: this.blogs.dbviews.page_author,
             orderCol: 'postDate',
             orderDir: 'desc',
             limit: 10
@@ -38,7 +38,7 @@ class ViewPage {
     */
     featuredBlogList(done) {
         return this.blogs.all({
-            name: this.blogs.dbviews.page_author,
+            from: this.blogs.dbviews.page_author,
             where: { featured: true },
             orderCol: 'postDate',
             orderDir: 'desc'
@@ -52,7 +52,7 @@ class ViewPage {
     */
     featuredTattooList(done) {
         return this.tattoos.all({
-            name: this.tattoos.dbviews.tattoo_author,
+            from: this.tattoos.dbviews.tattoo_author,
             where: { featured: true },
             orderCol: 'postDate',
             orderDir: 'desc'

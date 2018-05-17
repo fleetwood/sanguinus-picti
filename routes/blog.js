@@ -5,7 +5,7 @@ router.get('/blog', (req, res) => {
   page.getMenus()
     .then(menus => {
       page.all({
-          name: page.tables.views.page_author, 
+          from: page.tables.views.page_author, 
           where: { pageType: page.pageType },
           orderCol: page.tables.postDate,
           orderDir: page.tables.sort.desc
@@ -21,7 +21,7 @@ router.get('/blog', (req, res) => {
 
 router.get('/blog/:url', (req, res) => {
   const byBlogUrl = {
-    name: page.tables.views.page_author,
+    from: page.tables.views.page_author,
     where: {
       url: req.params.url
     }
