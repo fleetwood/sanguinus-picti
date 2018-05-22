@@ -47,8 +47,12 @@ class Page extends KnexModel {
                     featured: {
                         type: 'boolean'
                     },
-                    author_id: {
-                        type: 'integer',
+                    authors: {
+                        type: 'array',
+                        minItems: 1,
+                        items: {
+                            type: 'number'
+                        },
                         required: true
                     },
                     postDate: {

@@ -1,20 +1,24 @@
 extends ../layouts/left
+include ../mixins/artist-preview
 
 block page_content
-  article.box.post
+  article.box.tattoo
     header
       h2= title
     hr
-    for post in data
+    for tattoo in data
       section
-        a.image.featured(href=`./tattoos/${post.url}`)
-          img(src=`${post.images.header}`)
+        a.image.featured(href=`./tattoos/${tattoo.url}`)
+          img(src=`${tattoo.images.header}`)
         header
-          a(href=`./tattoos/${post.url}`)
-            h3= post.title
-        div= post.summary
-        .footer
-          | by: (TODO: artist preview)
-          | #{recentDate(post.postDate)}
+          a(href=`./tattoos/${tattoo.url}`)
+            h3= tattoo.title
+        div= tattoo.summary
+        .footer.row
+          div(class='8u')
+            for author in tattoo.authors
+              +artist-preview(author, 'left')
+          div(class='4u') Posted
+            | #{recentDate(tattoo.postDate)}
       hr
       br

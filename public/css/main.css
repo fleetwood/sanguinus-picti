@@ -777,7 +777,7 @@ form textarea {
   form input[type=password]:focus,
   form select:focus,
   form textarea:focus {
-    box-shadow: inset 0px 0px 1px 1px #43bff0; }
+    box-shadow: inset 0px 0px 1px 1px #34d2ee; }
 
 form textarea {
   height: 15em; }
@@ -1710,7 +1710,7 @@ ol.default {
   .gallery .image .icon {
     right: 3px;
     position: absolute;
-    color: #3399aa;
+    color: #34d2ee;
     background-color: rgba(0, 0, 0, 0.5);
     font-size: 1.5em;
     padding: 3px; }
@@ -1726,7 +1726,7 @@ ol.default {
   opacity: 1; }
 
 .gallery .image.header {
-  border: 2px solid #3399aa; }
+  border: 2px solid #34d2ee; }
   .gallery .image.header .icon {
     visibility: hidden; }
 
@@ -1868,12 +1868,17 @@ ol.default {
   margin: 20px 0px 20px 0px; }
 
 /*****************
-		ARTIST PREVIEW
-		*****************/
+	ARTIST PREVIEW
+	*****************/
 .artist-info {
   transition: 1s;
-  float: right;
-  margin-left: 10px; }
+  margin: 15px;
+  float: left;
+  height: 60px;
+  width: 60px; }
+
+.artist-info.right {
+  float: right; }
 
 .artist-info > .thumb {
   max-width: 60px;
@@ -1881,16 +1886,52 @@ ol.default {
   max-height: 60px;
   padding: 3px;
   border: solid 2px #555555;
-  cursor: pointer; }
+  cursor: pointer;
+  float: left;
+  position: absolute; }
 
 .artist-info:hover > .thumb {
   border: solid 2px #d52349; }
 
+.artist-info.selected > .thumb {
+  border: 2px solid #34d2ee; }
+
 .artist-info > .popup {
   display: none;
   border-radius: 20px;
-  margin: -25px 0 0 -175px;
-  position: absolute; }
+  position: absolute;
+  margin: -45px 0 0 0; }
+
+.artist-info.right > .popup {
+  margin: -45px 0 0 -145px; }
 
 .artist-info:hover > .popup, .popup:hover {
   display: block; }
+
+.artist-info .icon {
+  font-size: 1.5em;
+  margin: 16px 19px;
+  position: absolute;
+  visibility: hidden;
+  cursor: pointer;
+  color: black; }
+
+.artist-info.selected .icon.fa-check-circle {
+  visibility: visible;
+  color: #34d2ee; }
+
+.artist-info.selected:hover .icon.fa-check-circle {
+  visibility: hidden; }
+
+.artist-info:hover.selected .icon.fa-minus-circle {
+  visibility: visible; }
+
+.artist-info:hover .icon.fa-plus-circle {
+  visibility: visible; }
+
+.clearfix:after, .gallery:after {
+  content: ".";
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both; }

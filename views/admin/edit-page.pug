@@ -1,5 +1,6 @@
 extends ../layouts/full
 include ../mixins/gallery-edit
+include ../mixins/artist-selector
 
 block page_content
     article.box.post
@@ -46,6 +47,12 @@ block page_content
                         .col-md-4
                             input#featured(type='checkbox', name='featured', checked=data.featured)
 
+                    // SELECT AUTHORS
+                    .form-group
+                        label.col-md-4.control-label(for='featured') Select Artists
+                        .col-md-4
+                            +artist-selector
+
                     // PAGE TYPE
                     .form-group
                         label.col-md-4.control-label(for='pageType') Page Type
@@ -65,7 +72,6 @@ block page_content
                         label.col-md-4.control-label(for='save')
                         .col-md-8
                             input#pageId(type='hidden', value=data.id)
-                            input#author_id(type='hidden', value=data.author_id)
                             div#results
                             button#save.button(name='save') Save
                             button#cancel.button.alt(name='cancel') Cancel
@@ -102,14 +108,17 @@ block append scripts
                 const t = makeUrl(pageTitle.val());
                 $('#url').val(t);
             });
-            
+            function getAuthors() {
+                var val = $('#authors').val();
+                return val.length > 0 ? val : 1;
+            }
             $('#save').click(function() {
                 const images = $('#images');
                 const gallery = images.val().length > 0 ? images.val().split(',') : [];
                 const header = $('.image.header').attr('data-image') || gallery[0];
                 const data = {
                     id: $('#pageId').val(),
-                    author_id: $('#author_id').val(),
+                    authors: getAuthors(),
                     featured: $('#featured').val(),
                     title: $('#title').val(),
                     url: $('#url').val(),

@@ -13,7 +13,7 @@ $base_red: #d52349;
 $hover_red: #e53359;
 $active_red: #c51349;
 
-$sky_blue: #43bff0;
+$sky_blue: #34d2ee;
 
 $white: #fff;
 $mostly_white: #ddd;
@@ -1531,7 +1531,6 @@ $soft_white: #ccc;
 
 	/* My Stuff */
 
-	
 	.gallery {
 
 		.image {
@@ -1561,7 +1560,7 @@ $soft_white: #ccc;
 			.icon {
 				right: 3px;
 				position: absolute;
-				color: #3399aa;
+				color: $sky_blue;
 				background-color: rgba(0, 0, 0, 0.5);
 				font-size: 1.5em;
 				padding: 3px;
@@ -1581,7 +1580,7 @@ $soft_white: #ccc;
 			opacity: 1;
 		}
 		.image.header {
-			border: 2px solid #3399aa;;
+			border: 2px solid $sky_blue;
 			.icon {
 				visibility: hidden;
 			}
@@ -1601,23 +1600,20 @@ $soft_white: #ccc;
 		-webkit-border-radius: 4px;
 		border-radius: 4px;
 		padding: 5px 5px 5px 15px
-		}
-		
-		.ajax-file-upload-filename {
+	}	
+	.ajax-file-upload-filename {
 		width: 300px;
 		height: auto;
-		margin: 0 5px 5px 0px;
-		
-		}
-		
-		.ajax-file-upload-filesize {
+		margin: 0 5px 5px 0px;	
+	}	
+	.ajax-file-upload-filesize {
 		width: 50px;
 		height: auto;
 		margin: 0 5px 5px 0px;
 		display: inline-block;
 		vertical-align:middle;
-		}
-		.ajax-file-upload-progress {
+	}
+	.ajax-file-upload-progress {
 		margin: 5px 10px 5px 0px;
 		position: relative;
 		width: 250px;
@@ -1626,23 +1622,21 @@ $soft_white: #ccc;
 		border-radius: 3px;
 		display: inline-block;
 		color:#FFFFFF;
-		
-		}
-		.ajax-file-upload-bar {
+	}
+	.ajax-file-upload-bar {
 		background-color: #0ba1b5;
 		width: 0;
 		height: 20px;
 		border-radius: 3px;
-		color:#FFFFFF;
-		
-		}
-		.ajax-file-upload-percent {
+		color:#FFFFFF;	
+	}
+	.ajax-file-upload-percent {
 		position: absolute;
 		display: inline-block;
 		top: 3px;
 		left: 48%
-		}
-		.ajax-file-upload-red {
+	}
+	.ajax-file-upload-red {
 		-moz-box-shadow: inset 0 39px 0 -24px #e67a73;
 		-webkit-box-shadow: inset 0 39px 0 -24px #e67a73;
 		box-shadow: inset 0 39px 0 -24px #e67a73;
@@ -1661,8 +1655,8 @@ $soft_white: #ccc;
 		cursor: pointer;
 		vertical-align: top;
 		margin: 5px 10px 5px 0px;
-		}
-		.ajax-file-upload-green {
+	}
+	.ajax-file-upload-green {
 		background-color: #77b55a;
 		-moz-border-radius: 4px;
 		-webkit-border-radius: 4px;
@@ -1680,8 +1674,8 @@ $soft_white: #ccc;
 		text-shadow: 0 1px 0 #5b8a3c;
 		vertical-align: top;
 		margin: 5px 10px 5px 0px;
-		}
-		.ajax-file-upload {
+	}
+	.ajax-file-upload {
 			font-family: Arial, Helvetica, sans-serif;
 			font-size: 16px;
 			 font-weight: bold;
@@ -1709,17 +1703,14 @@ $soft_white: #ccc;
 			-webkit-box-shadow: 0 2px 0 0 #13648d;
 			box-shadow: 0 2px 0 0 #13648d;
 			vertical-align: middle;
-			}
-		
-		.ajax-file-upload:hover {
+	}
+	.ajax-file-upload:hover {
 					background: #3396c9;
 					-moz-box-shadow: 0 2px 0 0 #15719f;
 					-webkit-box-shadow: 0 2px 0 0 #15719f;
 					box-shadow: 0 2px 0 0 #15719f;
-		}
-		
-		.ajax-upload-dragdrop
-		{
+	}
+	.ajax-upload-dragdrop	{
 		
 			border:2px dotted #A5A5C7;
 			width:420px;
@@ -1727,45 +1718,82 @@ $soft_white: #ccc;
 			text-align:left;
 			vertical-align:middle;
 			padding:10px 10px 0px 10px;
-		}
-		
-		.state-hover
-		{
+	}
+	.state-hover {
 				border:2px solid #A5A5C7;
-		}
-		.ajax-file-upload-container
-		{
+	}
+	.ajax-file-upload-container {
 			margin:20px 0px 20px 0px;
-		}
+	}
 
-		/*****************
-		ARTIST PREVIEW
-		*****************/
+	/*****************
+	ARTIST PREVIEW
+	*****************/
 		
-		.artist-info {
-			transition: 1s;
-			float: right;
-			margin-left: 10px;
-		}
-		.artist-info > .thumb {
-				max-width: 60px;
-				border-radius: 60px;
-				max-height: 60px;
-				padding: 3px;
-				border: solid 2px #555555;
-				cursor: pointer;
-		}
-		.artist-info:hover > .thumb {
-			border: solid 2px #d52349;
-		}
-		
-		.artist-info > .popup {
-			display: none;
-			border-radius: 20px;
-			margin: -25px 0 0 -175px;
+	.artist-info {
+		transition: 1s;
+		margin: 15px;
+		float: left;
+		height: 60px;
+		width: 60px;
+	}
+	.artist-info.right {
+		float: right;
+	}
+	.artist-info > .thumb {
+			max-width: 60px;
+			border-radius: 60px;
+			max-height: 60px;
+			padding: 3px;
+			border: solid 2px #555555;
+			cursor: pointer;
+			float:left;
 			position: absolute;
-		}
+	}
+	.artist-info:hover > .thumb {
+		border: solid 2px #d52349;
+	}	
+	.artist-info.selected > .thumb {
+		border: 2px solid $sky_blue;
+	}
+	.artist-info > .popup {
+		display: none;
+		border-radius: 20px;
+		position: absolute;
+		margin: -45px 0 0 0;
+	}
+	.artist-info.right > .popup {
+		margin: -45px 0 0 -145px;
+	}
+	.artist-info:hover > .popup, .popup:hover {
+		display: block;
+	}
+	.artist-info .icon {
+		font-size: 1.5em;
+    margin: 16px 19px;
+		position: absolute;
+		visibility: hidden;
+		cursor: pointer;
+		color: black;
+	}
+	.artist-info.selected .icon.fa-check-circle {
+		visibility: visible;
+		color: $sky_blue;
+	}
+	.artist-info.selected:hover .icon.fa-check-circle {
+		visibility: hidden;
+	}
+	.artist-info:hover.selected .icon.fa-minus-circle {
+		visibility: visible;
+	}
+	.artist-info:hover .icon.fa-plus-circle {
+		visibility: visible;
+	}
 
-		.artist-info:hover > .popup, .popup:hover {
-			display: block;
-		}
+	.clearfix:after, .gallery:after { 
+		content: "."; 
+		visibility: hidden; 
+		display: block; 
+		height: 0; 
+		clear: both;	 
+	}

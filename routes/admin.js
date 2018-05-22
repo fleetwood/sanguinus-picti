@@ -23,9 +23,9 @@ var upload = multer({ storage: storage }).array('file');
 
 const parseData = (data) => {
   return {
-    author_id: 1,
+    authors: data.authors.split(',').map(i => parseInt(i)),
     featured: data.featured === "on",
-    title: data.title,
+    title: data.title,  
     summary: data.summary,
     body: data.body,
     pageType: data.pagetype,
@@ -83,7 +83,7 @@ router.post('/create', (req, res) => {
       // redirect?
     })
     .catch(err => {
-      res.status(500).json(err);
+      res.status(500).json(JSON.stringify(err, null, 2));
     });
 });
 

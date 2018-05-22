@@ -15,98 +15,97 @@ mixin gallery-edit(data)
       disabled='true' 
       value=(data && data.header ? data.header : '')
     )
-    #gallery
+    .gallery
+    
+    script(src='/unitegallery/themes/tiles/ug-theme-tiles.js')
+    script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+    script.
+      $(document).ready(function() {
+        const gallery = $('.gallery');
+        const images = $('#images');
+        const headerImage = $('#header-image');
 
-    block append scripts
-      script(src='/unitegallery/themes/tiles/ug-theme-tiles.js')
-      script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
-      script.
-        $(document).ready(function() {
-          const gallery = $('#gallery');
-          const images = $('#images');
-          const headerImage = $('#header-image');
+        function parseImages() {
+          return images.val().length > 0 ? images.val().split(',') : [];
+        }
 
-          function parseImages() {
-            return images.val().length > 0 ? images.val().split(',') : [];
-          }
+        function imageIcon(img) {
+          return `
+          <div class="image" data-image='${img}'><img src='${img}' />
+            <i class="icon fas fa-bookmark" data-image='${img}'></i>
+            <i class="icon fas fa-trash" data-image='${img}'></i>
+          </div>`;
+        }
 
-          function imageIcon(img) {
-            return `
-            <div class="image" data-image='${img}'><img src='${img}' />
-              <i class="icon fas fa-bookmark" data-image='${img}'></i>
-              <i class="icon fas fa-trash" data-image='${img}'></i>
-            </div>`;
-          }
+        function setHeader(img) {
+          $('.image').removeClass('header');
+          headerImage.val(img);
+          $(".image[data-image='" + img + "']").addClass('header');
+        }
 
-          function setHeader(img) {
-            $('.image').removeClass('header');
-            headerImage.val(img);
-            $(".image[data-image='" + img + "']").addClass('header');
-          }
-
-          function addImages(val) {
-            const imgs = parseImages();
-            function add(i) {
-              if (imgs.indexOf(i)<0) {
-                imgs.push(i);
-                gallery.append(imageIcon(i));
-              }
-            }
-            if(Array.isArray(val)) {
-              val.forEach(img => add(img));
-            } 
-            else {
-              add(val);
-            }
-            images.empty().val(imgs);
-
-            $('.fa-bookmark').click(e => {
-              const img = e.currentTarget.getAttribute('data-image');
-              setHeader(img);
-            });
-
-            $('.fa-trash').click(e => {
-              const img = e.currentTarget.getAttribute('data-image');
-              removeImages(img);
-            });
-          }
-
-          function removeImages(val) {
-            const imgs = parseImages();
-            function del(i) {
-              const index = imgs.indexOf(i);
-              if (index > 0) {
-                imgs.splice(index,1);
-                const item = $(".image[data-image='" + i + "']");
-                item.remove();
-              }
-            }
-            if(Array.isArray(val)) {
-              val.forEach(img => del(img));
-            } 
-            else {
-              del(val);
-            }
-            images.val(imgs);
-          }
-
-          function initGallery(arr = null) {
-            // reset gallery
-            const imgs = arr || parseImages();
-            gallery.empty();
-            images.val('');
-            addImages(imgs);
-            if ($('#header-image').val().length > 0) {
-              setHeader($('#header-image').val());
+        function addImages(val) {
+          const imgs = parseImages();
+          function add(i) {
+            if (imgs.indexOf(i)<0) {
+              imgs.push(i);
+              gallery.append(imageIcon(i));
             }
           }
+          if(Array.isArray(val)) {
+            val.forEach(img => add(img));
+          } 
+          else {
+            add(val);
+          }
+          images.empty().val(imgs);
 
-          $("#fileuploader").uploadFile({
-            url:"/admin/upload",
-            multiple: true,
-            showStatusAfterSuccess: false,
-            onSuccess:((files,data,xhr,pd) => addImages(data))
+          $('.fa-bookmark').click(e => {
+            const img = e.currentTarget.getAttribute('data-image');
+            setHeader(img);
           });
 
-          initGallery();
+          $('.fa-trash').click(e => {
+            const img = e.currentTarget.getAttribute('data-image');
+            removeImages(img);
+          });
+        }
+
+        function removeImages(val) {
+          const imgs = parseImages();
+          function del(i) {
+            const index = imgs.indexOf(i);
+            if (index > 0) {
+              imgs.splice(index,1);
+              const item = $(".image[data-image='" + i + "']");
+              item.remove();
+            }
+          }
+          if(Array.isArray(val)) {
+            val.forEach(img => del(img));
+          } 
+          else {
+            del(val);
+          }
+          images.val(imgs);
+        }
+
+        function initGallery(arr = null) {
+          // reset gallery
+          const imgs = arr || parseImages();
+          gallery.empty();
+          images.val('');
+          addImages(imgs);
+          if ($('#header-image').val().length > 0) {
+            setHeader($('#header-image').val());
+          }
+        }
+
+        $("#fileuploader").uploadFile({
+          url:"/admin/upload",
+          multiple: true,
+          showStatusAfterSuccess: false,
+          onSuccess:((files,data,xhr,pd) => addImages(data))
         });
+
+        initGallery();
+      });

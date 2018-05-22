@@ -192,7 +192,7 @@ class KnexModel {
       const k = this
         .all(options)
         .then(results => {
-          resolve(results[0]); // don't minimize this, in case of further debugging....
+          resolve(results); // don't minimize this, in case of further debugging....
         })
         .catch(err => {
           reject(err);

@@ -8,7 +8,7 @@ router.get('/tattoos', (req, res) => {
     .then(menus =>  {
       page.getTattoos()
         .then(results => {
-          res.render('tattoos/list', page.viewData(menus, results));
+          res.render('tattoos/list', page.viewData(router.user, menus, results));
         });
     })
     .catch(err => {

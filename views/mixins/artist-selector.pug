@@ -1,0 +1,57 @@
+mixin artist-selector(dir='left')
+
+  input#authors.form-control.input-md(
+      name='authors',
+      type='hidden',
+      disabled='true' 
+      value=(data && data.authors ? data.authors.toString() : '')
+    )
+  div(class=`artist-info ${dir} artist-selector`, data-id=2)
+    img(class='thumb selector', src='/images/CF_th.jpg')
+    i(class="icon fas fa-check-circle")
+    i(class="icon fas fa-plus-circle")
+    i(class="icon fas fa-minus-circle")
+  div(class=`artist-info ${dir} artist-selector`, data-id=1)
+    img(class='thumb selector', src='/images/JF_th.jpg')
+    i(class="icon fas fa-check-circle")
+    i(class="icon fas fa-plus-circle")
+    i(class="icon fas fa-minus-circle")
+  .clearfix
+  
+  script.
+      $(document).ready(() => {
+        function selectedArtists(val = null) {
+          var a = $('#authors');
+          if (val !== null) {
+            a.val(val);
+          }
+          return a.val().length > 0 ? a.val().split(',').map(i => parseInt(i)) : [];
+        }
+
+        function addArtistId(id, add) {
+          var current = selectedArtists();
+          var index = current.indexOf(id);
+          console.log(`${current} (${add}): ${id} at ${index}`)
+          if (add && index < 0) {
+            console.log('  Adding...');
+            current.push(id);
+          }
+          else if (add == false && index >= 0) {
+            console.log('  Removing...');
+            current.splice(index, 1);
+          }
+          selectedArtists(current.toString());
+        }
+
+        $('.artist-selector').click((e) => {
+          var t = $(e.currentTarget);
+          var s = 'selected';
+          t.toggleClass(s);
+          addArtistId(parseInt(t.attr('data-id')), t.hasClass(s));
+        });
+
+        // select artists
+        selectedArtists().forEach(a => {
+          $('.artist-selector[data-id='+a+']').addClass('selected');
+        });
+      });

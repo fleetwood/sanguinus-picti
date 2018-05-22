@@ -1,5 +1,6 @@
 extends ../layouts/full
 include ../mixins/gallery-edit
+include ../mixins/artist-selector
 
 block page_content
     article.box.post
@@ -41,11 +42,17 @@ block page_content
                         .col-md-4
                             textarea#body.form-control(name='body', placeholder="Say some good stuff.", required="Say something nice.")
 
-                    // PAGE TYPE
+                    // FEATURED
                     .form-group
                         label.col-md-4.control-label(for='featured') Feature Page
                         .col-md-4
                             input#featured(type='checkbox', name='featured')
+
+                    // SELECT AUTHORS
+                    .form-group
+                        label.col-md-4.control-label(for='featured') Select Artists
+                        .col-md-4
+                            +artist-selector
 
                     // PAGE TYPE
                     .form-group
@@ -64,12 +71,9 @@ block page_content
                     .form-group
                         label.col-md-4.control-label(for='save')
                         .col-md-8
-                            // todo: get logged in user id
-                            input#author_id(type='hidden', value=1)
                             button#save.button(name='save') Save
                             button#cancel.button.alt(name='cancel') Cancel
 
-block append scripts
     script(src="/trumbo/trumbowyg.min.js")
     script(src='/unitegallery/themes/tiles/ug-theme-tiles.js')
     script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
@@ -105,29 +109,28 @@ block append scripts
             });
 
             $('#save').click(function() {
-                function parseGallery() {
-                    const images = $('#images');
-                    const imgs = images.val().length > 0 ? images.val().split(',') : [];
-                    const himg = $('.image.header').attr('data-image') || imgs[0];
-                    return {header: himg, images: imgs};
+                const images = $('#images');
+                const gallery = images.val().length > 0 ? images.val().split(',') : [];
+                const header = $('.image.header').attr('data-image') || gallery[0];
+                function getAuthors() {
+                    var val = $('#authors').val();
+                    return val.length > 0 ? val : 1;
                 }
-                const imageGallery = parseGallery();
                 const data = {
                     featured: $('#featured').val(),
+                    authors: getAuthors(),
                     title: $('#title').val(),
                     url: $('#url').val(),
                     body: $('#body').val(),
                     summary: $('#summary').val(),
-                    images: parseGallery(),
+                    gallery: gallery.toString(),
+                    header: header,
                     pagetype: $('[name=pageType]:checked').val()
                 };
                 $.ajax({
                     url: '/admin/create',
                     type: 'POST',
-                    dataType: "json",
                     data: data,
-                    contentType: "application/json",
-                    cache: false,
                     error: (error) => console.log(`Error: ${error.toString()}`),
                     success: (response) => {
                         console.log('Got a response');
